@@ -5,7 +5,7 @@ a=[-0.5,0,0.5]
 
 final=np.asarray(list((it.product(a,a,a,a,a,a))))
 inputfile = "input/submit.sh"
-for i in range(len(final):
+for i in range(len(final)):
     outname="input/test/submit"+str(i)+".sh"
     with open(outname,'w') as new_file:
         with open(inputfile, 'r') as old_file:
