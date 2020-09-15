@@ -1,6 +1,6 @@
 #!/bin/bash
 #***you need to change the jobname in the below line to something meaningful, ie run010
-#SBATCH --job-name="run"
+#SBATCH --job-name="runxxx"
 #SBATCH --nodes=1
 #SBATCH --ntasks=1 
 #SBATCH --cpus-per-task=1
@@ -8,19 +8,12 @@
 #SBATCH --output="j%j.%N.out"
 ####SBATCH --partition=all
 
-export OMP_NUM_THREADS=1
-export OMP_PROC_BIND=true
-export OMP_PLACES=sockets
-export OMP_STACKSIZE="64M"   # or more
-export OMP_SCHEDULE="dynamic,1"
-
-#***this is the input file, needs a name ie run010 without the .inp
-myinp=""
-#***this is the operator file, needs a name ie run010 without the .op
-myop=""
-run="mnd"
+myinp="pyr4"
+myop="pyrmod4"
+# we will make use of altering parameters via the command line
+run="-mnd -D run000 -p k6a1 0.0 -p k6a2 0.0 -p k11 0.0 -p k12 0.0 -p k9a1 0.0 -p k9a2 0.0"
 source ~/.bashrc
-myexec="mctdh85"
+myexec="mctdh85P"
 
 # you may want to have some info file created when the job starts
 DATE=$(/bin/date)
@@ -42,8 +35,8 @@ mkdir -p $RUN_PATH
 cp -r $START_DIR/"$myinp".inp $RUN_PATH
 cp -r $START_DIR/"$myop".op $RUN_PATH
 cd $RUN_PATH
-
-srun "$myexec" -"$run" "$myinp".inp 
+echo "Run parameters are : $run"
+srun "$myexec" "$run" "$myinp".inp 
 
 # If you do use MPI, use 'mpirun' to start the job.
 # Check the various mpirun options for performance 
