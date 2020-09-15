@@ -1,6 +1,6 @@
 #!/bin/bash
 #***you need to change the jobname in the below line to something meaningful, ie run010
-#SBATCH --job-name="runxxx"
+#SBATCH --job-name="run513"
 #SBATCH --nodes=1
 #SBATCH --ntasks=1 
 #SBATCH --cpus-per-task=1
@@ -11,7 +11,7 @@
 myinp="pyr4"
 myop="pyrmod4"
 # we will make use of altering parameters via the command line
-run="xyz"
+run="-mnd -D run513 -p k6a1 0.5 -p k6a2 -0.5 -p k11 0.0 -p k12 -0.5 -p k9a1 -0.5 -p k9a2 -0.5"
 source ~/.bashrc
 myexec="mctdh85P"
 
