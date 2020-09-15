@@ -21,7 +21,7 @@ args = vars(parser.parse_args())
 
 #now these are slightly specific to pyrazine
 if args['coordinate']:
-    c1 = str(args['coodinate'])
+    c1 = str(args['coordinate'])
 else:
     c1='k6a1'
 
