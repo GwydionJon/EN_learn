@@ -8,18 +8,12 @@
 #SBATCH --output="j%j.%N.out"
 ####SBATCH --partition=all
 
-export OMP_NUM_THREADS=1
-export OMP_PROC_BIND=true
-export OMP_PLACES=sockets
-export OMP_STACKSIZE="64M"   # or more
-export OMP_SCHEDULE="dynamic,1"
-
 myinp="pyr4"
 myop="pyrmod4"
 # we will make use of altering parameters via the command line
 run="-mnd -D run000 -p k6a1 0.0 -p k6a2 0.0 -p k11 0.0 -p k12 0.0 -p k9a1 0.0 -p k9a2 0.0"
 source ~/.bashrc
-myexec="mctdh85"
+myexec="mctdh85P"
 
 # you may want to have some info file created when the job starts
 DATE=$(/bin/date)
