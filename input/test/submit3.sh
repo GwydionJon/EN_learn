@@ -11,7 +11,7 @@
 myinp="pyr4"
 myop="pyrmod4"
 # we will make use of altering parameters via the command line
-run="-mnd -D run3 -p k6a1 -0.5 -p k6a2 -0.5 -p k11 -0.5 -p k12 -0.5 -p k9a1 0.0 -p k9a2 -0.5"
+run="-mnd -D run3 -p k6a1 -0.77 -p k6a2 -0.77 -p k11 -0.77 -p k12 -0.77 -p k9a1 -0.77 -p k9a2 -0.41000000000000003"
 source ~/.bashrc
 myexec="mctdh85P"
 
