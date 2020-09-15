@@ -48,9 +48,8 @@ if args['nSteps']:
 	nSteps_called=True
 else:
 	n = 3
-	
 
-#first case
+#first case both or none are given
 if(rangeStep_called==nSteps_called):
 	if(rangeStep_called==True and nSteps_called==True ):
 		print('Both nSteps and rangeStep have been given. rangeStep will be ignored.')
@@ -58,12 +57,14 @@ if(rangeStep_called==nSteps_called):
 		print('no additional arguments were made.')
 	var_array=  np.linspace(-r,r,n, endpoint=True)
 	print('The used range will thus be: ', var_array)
-	
+
+#second case: only range step
 elif(rangeStep_called==True):
 	print('rangeStep was given')
 	var_array= np.arange(-r,r+dr,dr) # r+dr is nesicassry to ensure that some value around the desired endpoint is present
 	print('The used range will thus be:', var_array)
 
+#third case only nStep
 elif(nSteps_called==True):
 	print('nSteps was given')
 	var_array= np.linspace(-r,r,n, endpoint=True)
@@ -77,7 +78,7 @@ print('The number of generated inputfiles will be:', len(final))
 
 
 inputfile = "submit.sh"
-for i in range(len(final):
+for i in range(len(final)):
     outname="test/submit"+str(i)+".sh"
     with open(outname,'w') as new_file:
         with open(inputfile, 'r') as old_file:
