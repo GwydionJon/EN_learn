@@ -16,24 +16,24 @@ parser.add_argument('-i', '--iteration',
 
 print("This script will submit all pending spectra calculations\n")
 
-testing=False
 
-if(testing==False):
-	if(os.path.exists("submitting_iteration.txt")==True):
-		with open("submitting_iteration.txt", "r") as file:
-			first_line = file.readline()
-			for last_line in file:
-				pass
-			start_number= int(last_line)+1
-		
-	else:
-		print("Start new run of submissions")
-		with open("submitting_iteration.txt",'w') as new_file:
-			new_file.write("Start sumbmission counting: \n")
-			start_number=0
 
-	print("Starting with submission nr:")
-	print(start_number)
+
+if(os.path.exists("submitting_iteration.txt")==True):
+	with open("submitting_iteration.txt", "r") as file:
+		first_line = file.readline()
+		for last_line in file:
+			pass
+		start_number= int(last_line)+1
+	
+else:
+	print("Start new run of submissions")
+	with open("submitting_iteration.txt",'w') as new_file:
+		new_file.write("Start sumbmission counting: \n")
+		start_number=0
+
+print("Starting with submission nr:")
+print(start_number)
 	
 start_next_batch=True
 
