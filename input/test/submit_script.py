@@ -16,7 +16,7 @@ parser.add_argument('-i', '--iteration',
 
 print("This script will submit all pending spectra calculations\n")
 
-testing=True
+testing=False
 
 if(testing==False):
 	if(os.path.exists("submitting_iteration.txt")==True):
@@ -35,7 +35,7 @@ if(testing==False):
 	print("Starting with submission nr:")
 	print(start_number)
 	
-start_next_batch=False
+start_next_batch=True
 
 
 if(start_next_batch==True):
@@ -43,7 +43,7 @@ if(start_next_batch==True):
 		print(str("submit" + str(i)+".sh"))
 		print(os.path.exists("submit0.sh"))
 		if(os.path.exists(str("submit" + str(i)+".sh"))==True):
-			#os.system("sbatch submit"+str(i)+".sh") 
+			os.system("sbatch submit"+str(i)+".sh") 
 			print("submitting file")
 			with open("submitting_iteration.txt",'a') as file:
 				file.write(str(i)+"\n")
