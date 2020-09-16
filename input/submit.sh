@@ -44,7 +44,7 @@ srun "$myexec" $run "$myinp".inp
 # to /tmpa on hitchcock
 mkdir -p /tmpa/$USER
 OUTPUT_PATH="/tmpa/$USER/$SLURM_JOB_ID.output"
-LINK_OUTDIR="$START_DIR/$SLURM_JOB_ID.output"
+LINK_OUTDIR="$START_DIR/outputs/$SLURM_JOB_ID.output"
 cp -r $RUN_PATH $OUTPUT_PATH || exit 1
 
 # remove data on /scratch
