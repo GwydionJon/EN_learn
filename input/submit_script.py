@@ -28,7 +28,7 @@ with open("submitting_iteration.txt", "r") as file:
     first_line = file.readline()
     for last_line in file:
         pass
-	submit0.sh
+	
 print("Starting with submission nr:")
 print(int(last_line))
 for i in range(int(last_line),int(last_line)+1):
