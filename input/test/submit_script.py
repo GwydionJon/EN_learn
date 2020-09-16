@@ -4,6 +4,12 @@ import os,sys,re
 import argparse
 import glob
 import re
+
+
+
+
+
+
 parser = argparse.ArgumentParser(description='''
         Script to submit all files in chunks of 20.
         ''')
@@ -35,7 +41,7 @@ else:
 print("Starting with submission nr:")
 print(start_number)
 	
-start_next_batch=True
+start_next_batch=False
 
 
 if(start_next_batch==True):
@@ -50,7 +56,7 @@ if(start_next_batch==True):
 			start_next_batch=False
 		else:
 			print("no further submitxxx.sh could be found")
-			raise SystemExit
+			
 		
 start_next_batch=False
 
@@ -58,24 +64,29 @@ start_next_batch=False
 if(start_next_batch==False):
 	
 	output_name_list=glob.glob('outputs/*.output')
+	print(output_name_list)
 	if(len(output_name_list)!=0):
 		for output_dir in output_name_list:
 			#gets the current path to return later
-			print(output_dir)
 			current_path=os.getcwd()
+			
+			#gets the run number from the dir name
 			run_file_name=glob.glob(output_dir+'/run*')[0]
 			run_number=int(run_file_name.split("run")[1])
 			print("Run file name: "+ run_file_name)
 			print("Run number: ",run_number)
+			
 			#change dir for autospec
 			os.chdir(run_file_name)
 			os.system("autospec85 0 5 ev 0")
 						
 			#return to previous dir
 			os.chdir(current_path)
+			#copys the spectrum into the spectra_data dir and changes its name according to the run number
 			os.system("cp "+ run_file_name +"/spectrum.pl " 
 				+ "./spectra_data/spectrum"+str(run_number)+".pl") 
-			os.system("mv "+ output_dir + " /outputs/finished/submit"+str(run_number)+".output")
+				#moves the complete output dir into the finished 
+			os.system("mv "+ output_dir + " outputs/finished/submit"+str(run_number)+".output")
 			
 			print("\n \n")
 		
