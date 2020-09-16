@@ -13,8 +13,7 @@ myop="pyrmod4"
 # we will make use of altering parameters via the command line
 run="xyz"
 source ~/.bashrc
-myexec="mctdh85P"
-
+myexec="mctdh85"
 # you may want to have some info file created when the job starts
 DATE=$(/bin/date)
 START_DIR=$(/bin/pwd)
