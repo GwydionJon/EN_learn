@@ -35,7 +35,7 @@ else:
 print("Starting with submission nr:")
 print(start_number)
 	
-start_next_batch=False
+start_next_batch=True
 
 
 if(start_next_batch==True):
@@ -61,6 +61,7 @@ if(start_next_batch==False):
 	if(len(output_name_list)!=0):
 		for output_dir in output_name_list:
 			#gets the current path to return later
+			print(output_dir)
 			current_path=os.getcwd()
 			run_file_name=glob.glob(output_dir+'/run*')[0]
 			run_number=int(run_file_name.split("run")[1])
@@ -72,9 +73,9 @@ if(start_next_batch==False):
 						
 			#return to previous dir
 			os.chdir(current_path)
-			os.system("cp "+ run_file_name +"spectrum.pl " 
+			os.system("cp "+ run_file_name +"/spectrum.pl " 
 				+ "./spectra_data/spectrum"+str(run_number)+".pl") 
-			
+			os.system("mv "+ output_dir + " /outputs/finished/submit"+str(run_number)+".output")
 			
 			print("\n \n")
 		
