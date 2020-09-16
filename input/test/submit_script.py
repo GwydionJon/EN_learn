@@ -35,7 +35,7 @@ else:
 print("Starting with submission nr:")
 print(start_number)
 	
-start_next_batch=True
+start_next_batch=False
 
 
 if(start_next_batch==True):
@@ -52,6 +52,9 @@ if(start_next_batch==True):
 			print("no further submitxxx.sh could be found")
 			raise SystemExit
 		
+start_next_batch=False
+
+
 if(start_next_batch==False):
 	
 	output_name_list=glob.glob('outputs/*.output')
@@ -66,12 +69,11 @@ if(start_next_batch==False):
 			#change dir for autospec
 			os.chdir(run_file_name)
 			os.system("autospec85 0 5 ev 0")
-			
-			
-			
+						
 			#return to previous dir
 			os.chdir(current_path)
-			
+			os.system("cp "+ run_file_name +"spectrum.pl " 
+				+ "./spectra_data/spectrum"+str(run_number)+".pl") 
 			
 			
 			print("\n \n")
