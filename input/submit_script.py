@@ -33,7 +33,7 @@ print("Starting with submission nr:")
 print(int(last_line))
 for i in range(int(last_line),int(last_line)+1):
 	print(str("submit" + str(i)+".sh"))
-	
+	print(os.path.exists(str("submit0.sh")
 	if(os.path.exists(str("submit" + str(i)+".sh"))==True):
 		os.system("sbatch submit"+str(i)+".sh") 
 		with open("submitting_iteration.txt",'w') as new_file:
