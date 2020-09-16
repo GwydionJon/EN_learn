@@ -36,7 +36,7 @@ cp -r $START_DIR/"$myinp".inp $RUN_PATH
 cp -r $START_DIR/"$myop".op $RUN_PATH
 cd $RUN_PATH
 echo "Run parameters are : $run"
-srun "$myexec" "$run" "$myinp".inp 
+srun "$myexec" $run "$myinp".inp 
 
 # If you do use MPI, use 'mpirun' to start the job.
 # Check the various mpirun options for performance 
