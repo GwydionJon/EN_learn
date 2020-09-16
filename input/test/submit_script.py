@@ -6,9 +6,49 @@ import glob
 import re
 
 
+def commit_job():
+	for i in range(start_number,start_number+5):
+		print(str("submit" + str(i)+".sh"))
+		print(os.path.exists("submit0.sh"))
+		if(os.path.exists(str("submit" + str(i)+".sh"))==True):
+			os.system("sbatch submit"+str(i)+".sh") 
+			print("submitting file")
+			with open("submitting_iteration.txt",'a') as file:
+				file.write(str(i)+"\n")
+			start_next_batch=False
+		else:
+			print("no further submitxxx.sh could be found")
+
+	start_next_batch=False
 
 
-
+def manage_output():
+	output_name_list=glob.glob('outputs/*.output')
+	print(output_name_list)
+	if(len(output_name_list)!=0):
+		for output_dir in output_name_list:
+			#gets the current path to return later
+			current_path=os.getcwd()
+			
+			#gets the run number from the dir name
+			run_file_name=glob.glob(output_dir+'/run*')[0]
+			run_number=int(run_file_name.split("run")[1])
+			print("Run file name: "+ run_file_name)
+			print("Run number: ",run_number)
+			
+			#change dir for autospec
+			os.chdir(run_file_name)
+			os.system("autospec85 0 5 ev 0")
+						
+			#return to previous dir
+			os.chdir(current_path)
+			#copys the spectrum into the spectra_data dir and changes its name according to the run number
+			os.system("cp "+ run_file_name +"/spectrum.pl " 
+				+ "./spectra_data/spectrum"+str(run_number)+".pl") 
+				#moves the complete output dir into the finished 
+			os.system("mv "+ output_dir + " outputs/finished/submit"+str(run_number)+".output")
+			
+			print("\n \n")
 
 parser = argparse.ArgumentParser(description='''
         Script to submit all files in chunks of 20.
@@ -43,52 +83,18 @@ print(start_number)
 	
 start_next_batch=False
 
+#number of total jobs to do: 
+number_of_jobs=glob.glob('/submit*.sh')
+print(number_of_jobs)
 
+#commit new jobs
 if(start_next_batch==True):
-	for i in range(start_number,start_number+5):
-		print(str("submit" + str(i)+".sh"))
-		print(os.path.exists("submit0.sh"))
-		if(os.path.exists(str("submit" + str(i)+".sh"))==True):
-			os.system("sbatch submit"+str(i)+".sh") 
-			print("submitting file")
-			with open("submitting_iteration.txt",'a') as file:
-				file.write(str(i)+"\n")
-			start_next_batch=False
-		else:
-			print("no further submitxxx.sh could be found")
+	commit_job()
 			
-		
-start_next_batch=False
-
-
+#manage outputs
 if(start_next_batch==False):
+	manage_output()
 	
-	output_name_list=glob.glob('outputs/*.output')
-	print(output_name_list)
-	if(len(output_name_list)!=0):
-		for output_dir in output_name_list:
-			#gets the current path to return later
-			current_path=os.getcwd()
-			
-			#gets the run number from the dir name
-			run_file_name=glob.glob(output_dir+'/run*')[0]
-			run_number=int(run_file_name.split("run")[1])
-			print("Run file name: "+ run_file_name)
-			print("Run number: ",run_number)
-			
-			#change dir for autospec
-			os.chdir(run_file_name)
-			os.system("autospec85 0 5 ev 0")
-						
-			#return to previous dir
-			os.chdir(current_path)
-			#copys the spectrum into the spectra_data dir and changes its name according to the run number
-			os.system("cp "+ run_file_name +"/spectrum.pl " 
-				+ "./spectra_data/spectrum"+str(run_number)+".pl") 
-				#moves the complete output dir into the finished 
-			os.system("mv "+ output_dir + " outputs/finished/submit"+str(run_number)+".output")
-			
-			print("\n \n")
 		
 		
 		
