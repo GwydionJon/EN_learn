@@ -93,6 +93,10 @@ if(os.path.exists(save_location)==False):
 	
 if(os.path.exists(save_location+"/outputs")==False):
 	os.system("mkdir "+ save_location+"/outputs")
+if(os.path.exists(save_location+"/spectra_data")==False):
+	os.system("mkdir "+ save_location+"/spectra_data")
+
+
 
 for i in range(len(final)):
     outname=save_location+"/submit"+str(i)+".sh"
