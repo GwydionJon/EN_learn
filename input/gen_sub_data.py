@@ -88,6 +88,10 @@ print('The number of generated inputfiles will be:', len(final))
 
 
 inputfile = "submit.sh"
+if(os.path.exists(save_location)==False)
+	os.system("mkdir "+ save_location)
+
+
 for i in range(len(final)):
     outname=save_location+"/submit"+str(i)+".sh"
     with open(outname,'w') as new_file:
