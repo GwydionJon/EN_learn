@@ -16,31 +16,36 @@ parser.add_argument('-i', '--iteration',
 
 print("This script will submit all pending spectra calculations\n")
 
-if(os.path.exists("submitting_iteration.txt")==False):
+
+
+
+if(os.path.exists("submitting_iteration.txt")==True):
+	with open("submitting_iteration.txt", "r") as file:
+    		first_line = file.readline()
+    		for last_line in file:
+    		    pass
+		start_number= int(last_line)+1
+	
+else:
 	print("Start new run of submissions")
 	with open("submitting_iteration.txt",'w') as new_file:
 		new_file.write("Start sumbmission counting: \n")
-		new_file.write("0")
-		
-		
-		
-with open("submitting_iteration.txt", "r") as file:
-    first_line = file.readline()
-    for last_line in file:
-        pass
+		start_number=0
+
 	
 print("Starting with submission nr:")
-print(int(last_line))
-for i in range(int(last_line),int(last_line)+1):
+print(start_number)
+for i in range(start_number,start_number+5):
 	print(str("submit" + str(i)+".sh"))
 	print(os.path.exists("submit0.sh"))
 	if(os.path.exists(str("submit" + str(i)+".sh"))==True):
-		os.system("sbatch submit"+str(i)+".sh") 
-		with open("submitting_iteration.txt",'w') as new_file:
-			new_file.write("\n "+ str(i))
+		#os.system("sbatch submit"+str(i)+".sh") 
+		print("submitting file")
+		with open("submitting_iteration.txt",'a') as file:
+			file.write(str(i)+"\n")
 	else:
 		print("no further submitxxx.sh could be found")
-		raise SystemExit
+		#raise SystemExit
 		
 
 		
