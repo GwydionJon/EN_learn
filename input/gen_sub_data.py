@@ -11,7 +11,7 @@ parser = argparse.ArgumentParser(description='''
         ''')
 
 
-epilog = '\nUsage: python gen_data.py -r range -c k6a1 -ds 0.1 -n 10'
+epilog = '\nUsage: python gen_sub_data.py (-r 0.5 -dr 0.5 -n 3 -s test')# these are optional
 
 
 parser.add_argument('-r', '--range', help='input range from -r to +r; dafault = -0.5 to 0.5' , required =False)
