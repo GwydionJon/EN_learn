@@ -66,7 +66,10 @@ def manage_output():
 			print("\n \n")
 		start_next_batch=True # new outputs could be managed
 		print("after managing start_next_batch ist: ", start_next_batch)
-	
+	else:
+		start_next_batch=False
+		print("nothing to manage: ", start_next_batch)
+
 
 parser = argparse.ArgumentParser(description='''
         Script to submit all files in chunks of 20.
@@ -101,19 +104,22 @@ print("Starting with submission nr:", start_number)
 	
 
 while(keep_running==True):
+	with open("submitting_iteration.txt", "r") as file:
+		first_line = file.readline()
+		for last_line in file:
+			pass
+		start_number= int(last_line)+1
 	#commit new jobs
-	print("start next batch after managing output:", start_next_batch)
+	print("\nstart next batch after managing output:", start_next_batch)
 	if(start_next_batch==True):
 		print("should start new job now")
 		commit_job()
-		start_next_batch=False
 	print("beginn sleep phase")
 	print("-z--z--z--z--z--z--z--z--z--z--z--z--z--z- \n \n")
-	time.sleep(300)
+	time.sleep(150)
 
 	#manage outputs
-	if(start_next_batch==False):
-		manage_output()
+	manage_output()
 		
 		
 	if(check_completion==True):

@@ -3,7 +3,6 @@ import numpy as np
 import os,sys,re
 import argparse
 import glob
-import re
 import time
 
 #global variables:
@@ -186,7 +185,10 @@ if(mode in [1,2]:
 	if(os.path.exists(save_location+"/spectra_data")==False):
 		os.system("mkdir "+ save_location+"/spectra_data")
 	
-	
+	with open("all_"+str8len(final))+"_configuration.txt",'w') as store_file:
+		for line in final:
+			store_file.write(line)
+			store_file.write("\n")
 	
 	for i in range(len(final)):
 		outname=save_location+"/submit"+str(i)+".sh"
@@ -200,9 +202,12 @@ if(mode in [1,2]:
 
 if(mode in[1,3,4,5]):
 	print("This script will submit all pending spectra calculations\n")
-	
-	
-	
+	#change directory to save_location
+	os.chdir(save_location)
+	if(os.path.exists("pyr4.inp"==False):
+		sys.exit("this program can not function if pyr4.inp is missing")
+	if(os.path.exists("pyrmod4.op"==False):
+		sys.exit("this program can not function if pyrmod4.op is missing")
 	
 	if(os.path.exists("submitting_iteration.txt")==True):
 		with open("submitting_iteration.txt", "r") as file:
