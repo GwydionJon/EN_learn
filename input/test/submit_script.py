@@ -19,21 +19,21 @@ def check_completion():
 	print("number of spectras:", number_spectra)
 	if(number_spectra==number_of_jobs):
 		return True
-	else
+	else:
 		return False
 
 def commit_job():
 	for i in range(start_number,start_number+5):
 		print(str("submit" + str(i)+".sh"))
-		print(os.path.exists("submit0.sh"))
 		if(os.path.exists(str("submit" + str(i)+".sh"))==True):
 			os.system("sbatch submit"+str(i)+".sh") 
 			print("submitting file")
 			with open("submitting_iteration.txt",'a') as file:
 				file.write(str(i)+"\n")
-			start_next_batch=False
 		else:
 			print("no further submitxxx.sh could be found")
+	print("start next set to false")
+	start_next_batch=False
 
 
 
@@ -64,9 +64,9 @@ def manage_output():
 			os.system("mv "+ output_dir + " outputs/finished/submit"+str(run_number)+".output")
 			
 			print("\n \n")
-		found_new_output=True # new outputs could be managed
-	else:
-		found_new_output=False #no new outputs were found
+		start_next_batch=True # new outputs could be managed
+		print("after managing start_next_batch ist: ", start_next_batch)
+	
 
 parser = argparse.ArgumentParser(description='''
         Script to submit all files in chunks of 20.
@@ -96,23 +96,25 @@ else:
 		new_file.write("Start sumbmission counting: \n")
 		start_number=0
 
-print("Starting with submission nr:")
-print(start_number)
+print("Starting with submission nr:", start_number)
 	
 	
 
 while(keep_running==True):
 	#commit new jobs
+	print("start next batch after managing output:", start_next_batch)
 	if(start_next_batch==True):
+		print("should start new job now")
 		commit_job()
 		start_next_batch=False
-	
+	print("beginn sleep phase")
+	print("-z--z--z--z--z--z--z--z--z--z--z--z--z--z- \n \n")
 	time.sleep(300)
+
 	#manage outputs
 	if(start_next_batch==False):
 		manage_output()
-		if(found_new_output==True):
-			start_next_batch=True
+		
 		
 	if(check_completion==True):
 		keep_running=False
