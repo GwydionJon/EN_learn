@@ -116,7 +116,7 @@ while(keep_running==True):
 		commit_job()
 	print("beginn sleep phase")
 	print("-z--z--z--z--z--z--z--z--z--z--z--z--z--z- \n \n")
-	time.sleep(150)
+	time.sleep(600)
 
 	#manage outputs
 	manage_output()
