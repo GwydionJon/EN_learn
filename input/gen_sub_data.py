@@ -90,6 +90,8 @@ print('The number of generated inputfiles will be:', len(final))
 inputfile = "submit.sh"
 if(os.path.exists(save_location)==False):
 	os.system("mkdir "+ save_location)
+	
+if(os.path.exists(save_location+"/outputs")==False:
 	os.system("mkdir "+ save_location+"/outputs")
 
 for i in range(len(final)):
