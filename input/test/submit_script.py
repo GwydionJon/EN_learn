@@ -4,7 +4,23 @@ import os,sys,re
 import argparse
 import glob
 import re
+import time
+#some necissary variables
+start_next_batch=True
 
+#number of total jobs to do: 
+number_of_jobs=len(glob.glob('*.sh'))
+print("total number of jobs:", number_of_jobs)
+keep_running=True #variable for the loop
+found_new_output=False
+
+def check_completion():
+	number_spectra = len(glob.glob('./spectra_data/*'))
+	print("number of spectras:", number_spectra)
+	if(number_spectra==number_of_jobs):
+		return True
+	else
+		return False
 
 def commit_job():
 	for i in range(start_number,start_number+5):
@@ -19,12 +35,11 @@ def commit_job():
 		else:
 			print("no further submitxxx.sh could be found")
 
-	start_next_batch=False
 
 
 def manage_output():
 	output_name_list=glob.glob('outputs/*.output')
-	print(output_name_list)
+	print("output name list:", output_name_list)
 	if(len(output_name_list)!=0):
 		for output_dir in output_name_list:
 			#gets the current path to return later
@@ -49,6 +64,9 @@ def manage_output():
 			os.system("mv "+ output_dir + " outputs/finished/submit"+str(run_number)+".output")
 			
 			print("\n \n")
+		found_new_output=True # new outputs could be managed
+	else:
+		found_new_output=False #no new outputs were found
 
 parser = argparse.ArgumentParser(description='''
         Script to submit all files in chunks of 20.
@@ -81,21 +99,28 @@ else:
 print("Starting with submission nr:")
 print(start_number)
 	
-start_next_batch=False
-
-#number of total jobs to do: 
-number_of_jobs=glob.glob('/submit*.sh')
-print(number_of_jobs)
-
-#commit new jobs
-if(start_next_batch==True):
-	commit_job()
-			
-#manage outputs
-if(start_next_batch==False):
-	manage_output()
 	
+
+while(keep_running==True):
+	#commit new jobs
+	if(start_next_batch==True):
+		commit_job()
+		start_next_batch=False
+	
+	time.sleep(300)
+	#manage outputs
+	if(start_next_batch==False):
+		manage_output()
+		if(found_new_output==True):
+			start_next_batch=True
 		
+	if(check_completion==True):
+		keep_running=False
+	
+
+
+
+
 		
 		
 		
