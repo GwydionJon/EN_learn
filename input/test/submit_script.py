@@ -21,6 +21,7 @@ def check_completion():
 		return True
 	else:
 		return False
+rsync -avz  tcstud25@hitchcock:~/pc-forschi/input/submits/spectra_data* spectras
 
 def commit_job():
 	for i in range(start_number,start_number+5):
@@ -53,7 +54,7 @@ def manage_output():
 			
 			#change dir for autospec
 			os.chdir(run_file_name)
-			os.system("autospec85 0 5 ev 0")
+			os.system("autospec85 -e -0.2258 eV  -1.0 1.0 eV 30 1")
 						
 			#return to previous dir
 			os.chdir(current_path)
@@ -116,7 +117,7 @@ while(keep_running==True):
 		commit_job()
 	print("beginn sleep phase")
 	print("-z--z--z--z--z--z--z--z--z--z--z--z--z--z- \n \n")
-	time.sleep(600)
+	time.sleep(150)
 
 	#manage outputs
 	manage_output()

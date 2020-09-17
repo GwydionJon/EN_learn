@@ -60,7 +60,7 @@ def manage_output():
 			
 			#change dir for autospec
 			os.chdir(run_file_name)
-			os.system("autospec85 0 5 ev 0")
+			os.system("autospec85 -e -0.2258 eV  -1.0 1.0 eV 30 1")
 						
 			#return to previous dir
 			os.chdir(current_path)
@@ -83,7 +83,7 @@ parser = argparse.ArgumentParser(description='''
 
 epilog = '\nUsage: python gen_sub_data.py (-r 0.5 -dr 0.5 -n 3 -s test)'# these are optional
 
-parser.add_argument('-m', '--mode', help='Decides the task this script should perform. 1.[all] Generate new submission files, submit and process the spectra. 2. [gen] generate only the files. 3.[subProc] only submit and process spectra. 4.[sub] only submit. 5.[proc] only process ', required =True, choices= [1,2,3,4,5,"all", "gen","subProc","sub","proc")
+parser.add_argument('-m', '--mode', help='Decides the task this script should perform. 1.[all] Generate new submission files, submit and process the spectra. 2. [gen] generate only the files. 3.[subProc] only submit and process spectra. 4.[sub] only submit. 5.[proc] only process ', required =True, choices= ["1","2","3","4","5","all", "gen","subProc","sub","proc"])
 
 parser.add_argument('-r', '--range', help='input range from -r to +r; dafault = -0.5 to 0.5; only relevant in mode 1 and 2' , required =False)
 
@@ -102,7 +102,7 @@ parser.add_argument('-i', '--iteration',
 
 args = vars(parser.parse_args())
 
-if(args['mode']:
+if(args['mode']):
 	mode=args['mode']
 
 #now these are slightly specific to pyrazine
@@ -128,7 +128,7 @@ else:
 	save_location = "submits"
 
 
-1,2,3,4,5,"all", "gen","subProc","sub","proc"
+#1,2,3,4,5,"all", "gen","subProc","sub","proc"
 #manage the different modes:
 if(mode=="all"):
 	mode=1
@@ -145,7 +145,7 @@ else:
 
 
 
-if(mode in [1,2]:
+if(mode in [1,2]):
 	# decide which steps to take:
 	#first case both or none are given
 	if(rangeStep_called==nSteps_called):
@@ -185,9 +185,19 @@ if(mode in [1,2]:
 	if(os.path.exists(save_location+"/spectra_data")==False):
 		os.system("mkdir "+ save_location+"/spectra_data")
 	
-	with open("all_"+str8len(final))+"_configuration.txt",'w') as store_file:
+	with open("all_"+str(len(final))+"_configuration.txt",'w') as store_file:
+		store_file.write("k6a1;k6a2;k11;k12;k9a1;k9a2\n")
 		for line in final:
-			store_file.write(line)
+			write_line=str(line).replace('[','').replace(']','').replace(' ',';')
+			if(write_line[0]==';'):
+				write_line=write_line[1:]
+			if(write_line[-1]==';'):
+				write_line=write_line[:-2]	
+			
+			while(';;' in write_line):
+				write_line=write_line.replace(';;',';')
+			store_file.write(write_line)
+				
 			store_file.write("\n")
 	
 	for i in range(len(final)):
@@ -204,9 +214,9 @@ if(mode in[1,3,4,5]):
 	print("This script will submit all pending spectra calculations\n")
 	#change directory to save_location
 	os.chdir(save_location)
-	if(os.path.exists("pyr4.inp"==False):
+	if(os.path.exists("pyr4.inp"==False)):
 		sys.exit("this program can not function if pyr4.inp is missing")
-	if(os.path.exists("pyrmod4.op"==False):
+	if(os.path.exists("pyrmod4.op"==False)):
 		sys.exit("this program can not function if pyrmod4.op is missing")
 	
 	if(os.path.exists("submitting_iteration.txt")==True):
@@ -237,7 +247,7 @@ if(mode in[1,3,4,5]):
 		time.sleep(300)
 		print("--------------------------")
 		#manage outputs
-		if(start_next_batch==Falseand mode in [1,3,5]):
+		if(start_next_batch==False and mode in [1,3,5]):
 			manage_output()
 			
 			
