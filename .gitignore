@@ -741,3 +741,6 @@ machine_learning/first_test-Copy1.csv
 machine_learning/Read_Spectrum_V2-Copy1.ipynb
 machine_learning/spectrum_energy_intensity-Copy1.csv
 machine_learning/spectrum_energy_intensity2-Copy1.csv
+.ipynb_checkpoints/Read_Spectrum_V3-checkpoint.ipynb
+machine_learning/.ipynb_checkpoints/ML_get_parameters_from_peakNumber-checkpoint.ipynb
+machine_learning/.ipynb_checkpoints/ML_one_maximum_with_height_blödsinn-checkpoint.ipynb
