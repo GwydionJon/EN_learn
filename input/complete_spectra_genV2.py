@@ -254,7 +254,7 @@ def setup_dir_structure(path_dict):
 #current_path=(os.path.dirname(__file__))
 filename = sys.argv[0]
 current_path=(os.path.dirname(filename))
-print(current_path)
+print(filename)
 
 os.chdir(current_path)
 
