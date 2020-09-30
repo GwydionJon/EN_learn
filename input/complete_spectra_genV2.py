@@ -197,7 +197,7 @@ def run_jobs(mode_list,path_dict,no_of_submits):
 	start_next_batch=True
 	while(jobs_available==True):
 		#only start new batch when last is finished and mode 1 or 3 was chosen
-		if(start_next_batch==True and any([mode in [1,3] for mode in mode_list]):
+		if(start_next_batch==True and any([mode in [1,3] for mode in mode_list])):
 			jobs_available = commit_jobs(path_dict,no_of_submits)
 			start_next_batch=False
 		time.sleep(60)	
