@@ -13,7 +13,7 @@ myop="pyrmod4"
 # we will make use of altering parameters via the command line
 run="xyz"
 run="-mnd"
-outname='whatever'
+outname="whatever"
 source ~/.bashrc
 myexec="mctdh85P"
 # you may want to have some info file created when the job starts
