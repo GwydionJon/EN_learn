@@ -105,7 +105,7 @@ def get_input_data():
 
 def create_submit_files(dict_param, path_dict):
 
-	if(os.path.exists("submit.sh")==False):
+	if(os.path.exists("submit_new.sh")==False):
 		sys.exit("this program can not function if submit.sh is missing")
 	inputfile = "submit_new.sh"
 	
