@@ -138,34 +138,7 @@ def create_submit_files(dict_param, path_dict):
 								new_file.write(line.replace("runxxx", run_str).replace("xyz", parameter_str).replace("whatever",output_dir)   )
 
 
-def create_submit_track_file(path_dict):
-	print("This script will submit all pending spectra calculations\n")
 
-	
-	
-	if(os.path.exists(working_directory+"/submitting_iteration.txt")==True):
-		with open(working_directory+"/submitting_iteration.txt", "r") as file:
-			first_line = file.readline()
-			for last_line in file:
-				pass
-			start_number= int(last_line)+1
-		
-	else:
-		print("Start new run of submissions")
-		with open(working_directory+"/submitting_iteration.txt",'w') as new_file:
-			new_file.write("Start sumbmission counting: \n")
-			start_number=0
-	
-	print("Starting with submission nr:", start_number)
-	return start_number
-
-def check_completion(path_dict):
-	number_spectra = len(glob.glob(working_directory+'/spectra_data/*'))
-	print("number of spectras:", number_spectra)
-	if(number_spectra==number_of_jobs):
-		return True
-	else:
-		return False
 
 def commit_jobs(path_dict, no_of_submits):
 	all_input_data=glob.glob(path_dict["input_Data"]+'/*.sh')
@@ -184,8 +157,7 @@ def commit_jobs(path_dict, no_of_submits):
 
 
 
-def manage_output(path_dict):
-	output_name_list=glob.glob(path_dict["output"]+'/*.output')
+def manage_output(path_dict,output_name_list):
 	print("output name list:", output_name_list)
 	#gets the current path to return later
 
@@ -215,19 +187,26 @@ def manage_output(path_dict):
 			shutil.move(output_dir,path_dict["finished_outputs"]+"/submits_"+run_parameters+".output" )
 
 			print("\n \n")
-		return True # new outputs could be managed
-	else:
-		return False #nothing could be done
+	
 			
 
 
 
 def run_jobs(mode_list,path_dict,no_of_submits):
 	jobs_available=True
+	start_next_batch=True
 	while(jobs_available==True):
-		jobs_available = commit_jobs(path_dict,no_of_submits)
-		manage_output(path_dict)
-		time.sleep(2)
+		#only start new batch when last is finished and mode 1 or 3 was chosen
+		if(start_next_batch==True and any([mode in [1,3] for mode in mode_list]):
+			jobs_available = commit_jobs(path_dict,no_of_submits)
+			start_next_batch=False
+		time.sleep(60)	
+		output_name_list=glob.glob(path_dict["output"]+'/*.output')
+		if(len(output_name_list)>=no_of_submits and any([mode in [1,4] for mode in mode_list]):
+			manage_output(path_dict)
+			start_next_batch=True
+
+
 
 
 
@@ -273,6 +252,7 @@ def setup_dir_structure(path_dict):
 #print(get_input_data())
 #change to current path
 current_path=(os.path.dirname(__file__))
+print(current_path)
 os.chdir(current_path)
 
 #get basic setup parameters
