@@ -15,7 +15,7 @@ run="xyz"
 run="-mnd"
 outname='whatever'
 source ~/.bashrc
-myexec="mctdh85P"
+myexec="mctdh85"
 # you may want to have some info file created when the job starts
 DATE=$(/bin/date)
 START_DIR=$(/bin/pwd)
