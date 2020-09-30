@@ -146,7 +146,7 @@ def commit_jobs(path_dict, no_of_submits):
 	current_path=os.getcwd()
 
 	#change directory to have output in the right place
-	os.chdir(path_dict["outputs"])
+	os.chdir(path_dict["output"])
 
 	print(current_path)
 	print(all_input_data[0].repalce("test",".."))
@@ -156,9 +156,9 @@ def commit_jobs(path_dict, no_of_submits):
 			no_of_submits=len(all_input_data)
 
 		for i in range(no_of_submits):
-			current_submission_file=all_input_data[0].repalce("test","..")
-			os.system("sbatch "+ all_input_data[i]) 
-			shutil.move(all_input_data[i], path_dict["finished_input"])
+			current_submission_file=all_input_data[i].repalce("test","..")
+			os.system("sbatch "+ current_submission_file) 
+			shutil.move(current_submission_file, path_dict["finished_input"])
 		print("submitting file")
 		os.chdir(current_path)
 		return True
