@@ -107,7 +107,7 @@ def create_submit_files(dict_param, path_dict):
 
 	if(os.path.exists("submit.sh")==False):
 		sys.exit("this program can not function if submit.sh is missing")
-	inputfile = "submit.sh"
+	inputfile = "submit_backup.sh"
 	
 	test=product(*dict_param.values())
 	df_combi = pd.DataFrame(test, columns=dict_param.keys())
@@ -123,7 +123,7 @@ def create_submit_files(dict_param, path_dict):
 		for i,row in enumerate(complete_array):
 			outname=path_dict["input_Data"]+"/submit__"
 			run_str="run"+str(i)
-			output_dir="output"
+			output_dir="run"
 			parameter_str="-mnd -D run" +str(i)
 			for j,nr in enumerate(row):
 				outname=outname+df_combi.columns[j]+"_"+str(nr)+"__"
@@ -135,7 +135,7 @@ def create_submit_files(dict_param, path_dict):
 			with open(outname,'w') as new_file:
 							with open(inputfile, 'r') as old_file:
 								line = old_file.read()
-								new_file.write(line.replace("runxxx", run_str).replace("xyz", parameter_str).replace("whatever",output_dir)   )
+								new_file.write(line.replace("runxxx", output_dir).replace("xyz", parameter_str))#.replace("whatever",output_dir)   )
 
 
 
