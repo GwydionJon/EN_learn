@@ -18,7 +18,7 @@ source ~/.bashrc
 myexec="mctdh85"
 # you may want to have some info file created when the job starts
 DATE=$(/bin/date)
-START_DIR=$(/bin/pwd/INSERT_DIR)
+START_DIR=$(/bin/pwd)
 JOBINFO="$START_DIR/$SLURM_JOB_ID.jobinfo"
 echo  "" > "$JOBINFO"
 echo  "Job started on $HOSTNAME" >> "$JOBINFO"
@@ -47,7 +47,7 @@ srun $myexec $run $myinp.inp
 mkdir -p /tmpa/$USER
 OUTPUT_PATH="/tmpa/$USER/$outname.output"
 mkdir $OUTPUT_PATH
-LINK_OUTDIR="$START_DIR/$outname.output"
+LINK_OUTDIR="$START_DIR/INSERT_DIR/$outname.output"
 cp -r $RUN_PATH/* $OUTPUT_PATH || exit 1
 
 # remove data on /scratch
