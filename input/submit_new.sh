@@ -18,7 +18,7 @@ source ~/.bashrc
 myexec="mctdh85"
 # you may want to have some info file created when the job starts
 DATE=$(/bin/date)
-START_DIR=$(/bin/pwd)
+START_DIR=$(/bin/pwd/INSERT_DIR)
 JOBINFO="$START_DIR/$SLURM_JOB_ID.jobinfo"
 echo  "" > "$JOBINFO"
 echo  "Job started on $HOSTNAME" >> "$JOBINFO"
