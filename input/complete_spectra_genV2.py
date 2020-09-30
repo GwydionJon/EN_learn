@@ -105,9 +105,9 @@ def get_input_data():
 
 def create_submit_files(dict_param, path_dict):
 
-	if(os.path.exists("submit_backup.sh")==False):
+	if(os.path.exists("submit_new.sh")==False):
 		sys.exit("this program can not function if submit.sh is missing")
-	inputfile = "submit_backup.sh"
+	inputfile = "submit_new.sh"
 	
 	test=product(*dict_param.values())
 	df_combi = pd.DataFrame(test, columns=dict_param.keys())
@@ -135,7 +135,7 @@ def create_submit_files(dict_param, path_dict):
 			with open(outname,'w') as new_file:
 							with open(inputfile, 'r') as old_file:
 								line = old_file.read()
-								new_file.write(line.replace("runxxx", run_str).replace("xyz", parameter_str))#.replace("whatever",output_dir)   )
+								new_file.write(line.replace("runxxx", run_str).replace("xyz", parameter_str).replace("whatever",output_dir)   )
 
 
 
@@ -204,7 +204,7 @@ def run_jobs(mode_list,path_dict,no_of_submits):
 		time.sleep(60)	
 		output_name_list=glob.glob(path_dict["output"]+'/*.output')
 		if(len(output_name_list)>=no_of_submits and any([mode in [1,4] for mode in mode_list])):
-			manage_output(path_dict)
+			manage_output(path_dict,output_name_list)
 			start_next_batch=True
 
 
