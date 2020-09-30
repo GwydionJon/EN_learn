@@ -7,6 +7,10 @@ import time
 from sklearn.utils.extmath import cartesian
 from itertools import product
 import pandas as pd
+import shutil
+
+
+
 
 #global variables:
 #for submission creation
@@ -115,18 +119,21 @@ def get_input_data():
 #this will first create a dataFrame of all possible combinations for the given parameters and save it as a csv
 #
 
-def create_submit_files(dict_param, working_directory):
+def create_submit_files(dict_param, path_dict):
+
+	if(os.path.exists("submit.sh")==False):
+		sys.exit("this program can not function if submit.sh is missing")
 	inputfile = "submit.sh"
 	
 	test=product(*dict_param.values())
 	df_combi = pd.DataFrame(test, columns=dict_param.keys())
-	df_combi.to_csv(working_directory+"/all_"+str(len(df_combi))+"_combinations.csv")
+	df_combi.to_csv(path_dict["working_directory"]+"/all_"+str(len(df_combi))+"_combinations.csv")
 	
 	#print(df_combi.head())
 	
 	complete_array=df_combi.to_numpy()
 	for i,row in enumerate(complete_array):
-		outname=working_directory+"/submit__"
+		outname=path_dict["input_Data"]+"/submit__"
 		run_str="run"+str(i)
 		parameter_str="-mnd -D run" +str(i)
 		for j,nr in enumerate(row):
@@ -142,14 +149,13 @@ def create_submit_files(dict_param, working_directory):
 							new_file.write(line.replace("runxxx", run_str).replace("xyz", parameter_str))
 
 
-def create_submit_track_file(working_directory):
+def create_submit_track_file(path_dict):
 	print("This script will submit all pending spectra calculations\n")
-	#change directory to save_location
-	os.chdir(working_directory)
+
 	
 	
-	if(os.path.exists("submitting_iteration.txt")==True):
-		with open("submitting_iteration.txt", "r") as file:
+	if(os.path.exists(working_directory+"/submitting_iteration.txt")==True):
+		with open(working_directory+"/submitting_iteration.txt", "r") as file:
 			first_line = file.readline()
 			for last_line in file:
 				pass
@@ -157,32 +163,25 @@ def create_submit_track_file(working_directory):
 		
 	else:
 		print("Start new run of submissions")
-		with open("submitting_iteration.txt",'w') as new_file:
+		with open(working_directory+"/submitting_iteration.txt",'w') as new_file:
 			new_file.write("Start sumbmission counting: \n")
 			start_number=0
 	
 	print("Starting with submission nr:", start_number)
+	return start_number
 
-
-def check_completion():
-	number_spectra = len(glob.glob('./spectra_data/*'))
+def check_completion(path_dict):
+	number_spectra = len(glob.glob(working_directory+'/spectra_data/*'))
 	print("number of spectras:", number_spectra)
 	if(number_spectra==number_of_jobs):
 		return True
 	else:
 		return False
 
-def commit_job():
-	for i in range(start_number,start_number+5):
-		print(str("submit" + str(i)+".sh"))
-		if(os.path.exists("submit*")==True):
-			os.system("sbatch submit"+str(i)+".sh") 
-			print("submitting file")
-			with open("submitting_iteration.txt",'a') as file:
-				file.write(str(i)+"\n")
-		else:
-			print("no further submitxxx.sh could be found")
-	start_next_batch=False
+def commit_job(file_name):
+	os.system("sbatch "+ file_name) 
+	print("submitting file")
+			
 
 
 
@@ -218,26 +217,35 @@ def manage_output():
 
 
 
-def run_jobs(mode_list,working_directory):
-	keep_running=True
-	start_next_batch=True
-	while(keep_running==True):
-		#commit new jobs
-		print("start next batch after managing output:", start_next_batch)
-		if(start_next_batch==True and any([mode in [1,3] for mode in mode_list])):
-			print("should start new job now")
-			commit_job()
-			start_next_batch=False
-		print("beginn sleep phase")
-		time.sleep(300)
-		print("--------------------------")
-		#manage outputs
-		if(start_next_batch==False and any([mode in [1,4] for mode in mode_list])):
-			manage_output()
+def run_jobs(mode_list,path_dict):
+	all_input_data=glob.glob(path_dict["input_Data"]+'/*.sh')
+
+
+	#later
+
+	#os.system("sbatch "+file_name) 
+	print("submitting file")
+
+
+	# keep_running=True
+	# start_next_batch=True
+	# while(keep_running==True):
+	# 	#commit new jobs
+	# 	print("start next batch after managing output:", start_next_batch)
+	# 	if(start_next_batch==True and any([mode in [1,3] for mode in mode_list])):
+	# 		print("should start new job now")
+	# 		commit_job(start_number)
+	# 		start_next_batch=False
+	# 	print("beginn sleep phase")
+	# 	time.sleep(300)
+	# 	print("--------------------------")
+	# 	#manage outputs
+	# 	if(start_next_batch==False and any([mode in [1,4] for mode in mode_list])):
+	# 		manage_output()
 			
 			
-		if(check_completion==True):
-			keep_running=False
+	# 	if(check_completion==True):
+	# 		keep_running=False
 
 
 
@@ -260,33 +268,59 @@ def run_jobs(mode_list,working_directory):
 #actual program start
 ##############################
 #print(get_input_data())
+#change to current path
+current_path=(os.path.dirname(__file__))
+os.chdir(current_path)
+
+#get basic setup parameters
 mode_list, dict_param, working_directory = get_input_data()
 
+
 if(os.path.exists(working_directory)==False):
-		os.system("mkdir "+ working_directory)
-		
+	os.makedirs(working_directory)
+if(os.path.exists(working_directory+"/input_Data")==False):
+	os.makedirs(working_directory+"/input_Data")
+if(os.path.exists(working_directory+"/input_Data/finished_input")==False):
+	os.makedirs(working_directory+"/input_Data/finished_input")
 if(os.path.exists(working_directory+"/outputs")==False):
-	os.system("mkdir "+ working_directory+"/outputs")
-if(os.path.exists(working_directory+"/outputs/finished")==False):
-	os.system("mkdir "+ working_directory+"/outputs/finished")
+	os.makedirs(working_directory+"/outputs")
+if(os.path.exists(working_directory+"/outputs/finished_outputs")==False):
+	os.makedirs(working_directory+"/outputs/finished_outputs")
 if(os.path.exists(working_directory+"/spectra_data")==False):
-	os.system("mkdir "+ working_directory+"/spectra_data")
+	os.makedirs(working_directory+"/spectra_data")
+
+#setup dict for all paths
+path_dict={	"working_directory":working_directory,
+			"input_Data": working_directory+"/input_Data",
+			"finished_outputs": working_directory+"/finished_outputs",
+			"finished_input":working_directory+"/finished_input",
+			"output": working_directory+"/output",
+			"spectra_data": working_directory+"/spectra_data"}
+
+
 
 #all and file generation
 if(any([mode in [1,2] for mode in mode_list])):
-	create_submit_files(dict_param, working_directory)
+	create_submit_files(dict_param, path_dict)
 	
 	
 #all and send to server
 
 if(any([mode in [1,3,4] for mode in mode_list])):
+
+	#check if needed files for calculations are present in the same dir as this file. if not throw exepction
 	if(os.path.exists("pyr4.inp")==False):
 		sys.exit("this program can not function if pyr4.inp is missing")
 	if(os.path.exists("pyrmod4.op")==False):
 		sys.exit("this program can not function if pyrmod4.op is missing")
-	create_submit_track_file(working_directory)
-	print("made File")
-	run_jobs(mode_list,working_directory)
+
+	#copy pyr4.inp and pyrmod4.op into the input_Data dir
+	shutil.copy2("./pyr4.inp",path_dict["input_Data"] )
+	shutil.copy2("./pyrmod4.op",path_dict["input_Data"] )
+
+
+
+	run_jobs(mode_list,path_dict)
 
 #####potentially redo everything in sending to server
 
