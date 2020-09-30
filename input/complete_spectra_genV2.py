@@ -123,19 +123,20 @@ def create_submit_files(dict_param, path_dict):
 		for i,row in enumerate(complete_array):
 			outname=path_dict["input_Data"]+"/submit__"
 			run_str="run"+str(i)
-			output_dir="output"
+			output_name="output"   
+			output_dir= path_dict["output"] #INSERT_DIR
 			parameter_str="-mnd -D run" +str(i)
 			for j,nr in enumerate(row):
 				outname=outname+df_combi.columns[j]+"_"+str(nr)+"__"
 				parameter_str=parameter_str + " -p " +df_combi.columns[j]+" "+str(nr)
-				output_dir=output_dir+"__"+df_combi.columns[j]+"_"+str(nr).replace(".","_")			
+				output_name=output_dir+"__"+df_combi.columns[j]+"_"+str(nr).replace(".","_")			
 			outname=outname+".sh"
 			#print(outname)
 			#print(parameter_str)
 			with open(outname,'w') as new_file:
 							with open(inputfile, 'r') as old_file:
 								line = old_file.read()
-								new_file.write(line.replace("runxxx", run_str).replace("xyz", parameter_str).replace("whatever",output_dir)   )
+								new_file.write(line.replace("runxxx", run_str).replace("xyz", parameter_str).replace("whatever",output_name).replace("INSERT_DIR", output_dir)   )
 								#new_file.write(line.replace("runxxx", run_str).replace("xyz", parameter_str))#.replace("whatever",output_dir)   )
 
 
