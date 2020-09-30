@@ -149,7 +149,7 @@ def commit_jobs(path_dict, no_of_submits):
 	os.chdir(path_dict["output"])
 
 	print(current_path)
-	print(all_input_data[0].repalce("test",".."))
+	print(all_input_data[0].replace("test",".."))
 	if(len(all_input_data)!=0):
 		print("Total of ", len(all_input_data), " jobs remaining.")
 		if(len(all_input_data)<=no_of_submits):
