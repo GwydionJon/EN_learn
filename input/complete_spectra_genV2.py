@@ -123,7 +123,7 @@ def create_submit_files(dict_param, path_dict):
 		for i,row in enumerate(complete_array):
 			outname=path_dict["input_Data"]+"/submit__"
 			run_str="run"+str(i)
-			output_dir=path_dict["output"]
+			output_dir=path_dict["output"]+"/output"
 			parameter_str="-mnd -D run" +str(i)
 			for j,nr in enumerate(row):
 				outname=outname+df_combi.columns[j]+"_"+str(nr)+"__"
