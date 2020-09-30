@@ -143,14 +143,24 @@ def create_submit_files(dict_param, path_dict):
 
 def commit_jobs(path_dict, no_of_submits):
 	all_input_data=glob.glob(path_dict["input_Data"]+'/*.sh')
+	current_path=os.getcwd()
+
+	#change directory to have output in the right place
+	os.chdir(path_dict["outputs"])
+
+	print(current_path)
+	print(all_input_data[0].repalce("test",".."))
 	if(len(all_input_data)!=0):
 		print("Total of ", len(all_input_data), " jobs remaining.")
 		if(len(all_input_data)<=no_of_submits):
 			no_of_submits=len(all_input_data)
+
 		for i in range(no_of_submits):
+			current_submission_file=all_input_data[0].repalce("test","..")
 			os.system("sbatch "+ all_input_data[i]) 
 			shutil.move(all_input_data[i], path_dict["finished_input"])
 		print("submitting file")
+		os.chdir(current_path)
 		return True
 	else:
 		print("No jobs remaining.")
