@@ -158,7 +158,7 @@ def commit_jobs(path_dict, no_of_submits):
 		for i in range(no_of_submits):
 			current_submission_file=all_input_data[i].replace("test","..")
 			os.system("sbatch "+ current_submission_file) 
-			shutil.move(current_submission_file, path_dict["finished_input"])
+			shutil.move(current_submission_file, "../"+path_dict["finished_input"])
 		print("submitting file")
 		os.chdir(current_path)
 		return True
