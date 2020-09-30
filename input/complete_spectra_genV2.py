@@ -105,9 +105,9 @@ def get_input_data():
 
 def create_submit_files(dict_param, path_dict):
 
-	if(os.path.exists("submit_backup.sh")==False):
+	if(os.path.exists("submit.sh")==False):
 		sys.exit("this program can not function if submit.sh is missing")
-	inputfile = "submit_backup.sh"
+	inputfile = "submit.sh"
 	
 	test=product(*dict_param.values())
 	df_combi = pd.DataFrame(test, columns=dict_param.keys())
