@@ -21,7 +21,7 @@ parser.add_argument('-dr', '--rangeStep', help='size of the steps, that the valu
 
 parser.add_argument('-n','--nSteps',help='Tells the program how many steps it should do, will take priority if not consistend with rangeStep; default =3', required =False)
 
-parser.add_argument('-s','--save',help='tells the program where to store the data, the directory needs to exist beforehand; default =test', required =False)
+parser.add_argument('-s','--save',help='tells the program where to store the data, the directory needs to exist beforehand; default =submits', required =False)
 
 #bool to chekc if nSteps and rangeStep has been called:
 
@@ -56,7 +56,7 @@ if args['save']:
 	save_location = str(args['save'])
 	
 else:
-	save_location = "test"
+	save_location = "submits"
 	
 	
 #first case both or none are given
@@ -90,6 +90,14 @@ print('The number of generated inputfiles will be:', len(final))
 inputfile = "submit.sh"
 if(os.path.exists(save_location)==False):
 	os.system("mkdir "+ save_location)
+	
+if(os.path.exists(save_location+"/outputs")==False):
+	os.system("mkdir "+ save_location+"/outputs")
+if(os.path.exists(save_location+"/outputs/finished")==False):
+	os.system("mkdir "+ save_location+"/outputs/finished")
+if(os.path.exists(save_location+"/spectra_data")==False):
+	os.system("mkdir "+ save_location+"/spectra_data")
+
 
 
 for i in range(len(final)):
