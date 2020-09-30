@@ -252,8 +252,10 @@ def setup_dir_structure(path_dict):
 #print(get_input_data())
 #change to current path
 current_path=(os.path.dirname(__file__))
-print(current_path)
-os.chdir(current_path)
+#print(current_path)
+filename = sys.argv[0]
+
+os.chdir(os.path.abspath(filename))
 
 #get basic setup parameters
 mode_list, dict_param, working_directory, no_of_submits= get_input_data()
