@@ -12,10 +12,8 @@ myinp="pyr4"
 myop="pyrmod4"
 # we will make use of altering parameters via the command line
 run="xyz"
-run="-mnd"
-outname='whatever'
 source ~/.bashrc
-myexec="mctdh85P"
+myexec="mctdh85"
 # you may want to have some info file created when the job starts
 DATE=$(/bin/date)
 START_DIR=$(/bin/pwd)
@@ -36,8 +34,8 @@ mkdir -p $RUN_PATH
 cp -r $START_DIR/"$myinp".inp $RUN_PATH
 cp -r $START_DIR/"$myop".op $RUN_PATH
 cd $RUN_PATH
-echo "Run parameters are : $myexec $run $myinp.inp"
-srun $myexec $run $myinp.inp 
+echo "Run parameters are : $run"
+srun "$myexec" $run "$myinp".inp 
 
 # If you do use MPI, use 'mpirun' to start the job.
 # Check the various mpirun options for performance 
@@ -45,10 +43,9 @@ srun $myexec $run $myinp.inp
 # After the job has completed copy output 
 # to /tmpa on hitchcock
 mkdir -p /tmpa/$USER
-OUTPUT_PATH="/tmpa/$USER/$outname.output"
-mkdir $OUTPUT_PATH
-LINK_OUTDIR="$START_DIR/$outname.output"
-cp -r $RUN_PATH/* $OUTPUT_PATH || exit 1
+OUTPUT_PATH="/tmpa/$USER/$SLURM_JOB_ID.output"
+LINK_OUTDIR="$START_DIR/outputs/$SLURM_JOB_ID.output"
+cp -r $RUN_PATH $OUTPUT_PATH || exit 1
 
 # remove data on /scratch
 rm -rf $RUN_PATH 
