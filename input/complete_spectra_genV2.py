@@ -156,7 +156,7 @@ def commit_jobs(path_dict, no_of_submits):
 			no_of_submits=len(all_input_data)
 
 		for i in range(no_of_submits):
-			current_submission_file=all_input_data[i].repalce("test","..")
+			current_submission_file=all_input_data[i].replace("test","..")
 			os.system("sbatch "+ current_submission_file) 
 			shutil.move(current_submission_file, path_dict["finished_input"])
 		print("submitting file")
