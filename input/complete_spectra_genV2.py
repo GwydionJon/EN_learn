@@ -202,7 +202,7 @@ def run_jobs(mode_list,path_dict,no_of_submits):
 			start_next_batch=False
 		time.sleep(60)	
 		output_name_list=glob.glob(path_dict["output"]+'/*.output')
-		if(len(output_name_list)>=no_of_submits and any([mode in [1,4] for mode in mode_list]):
+		if(len(output_name_list)>=no_of_submits and any([mode in [1,4] for mode in mode_list])):
 			manage_output(path_dict)
 			start_next_batch=True
 
