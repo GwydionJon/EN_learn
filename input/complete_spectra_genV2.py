@@ -107,7 +107,7 @@ def create_submit_files(dict_param, path_dict):
 
 	if(os.path.exists("submit.sh")==False):
 		sys.exit("this program can not function if submit.sh is missing")
-	inputfile = "submit_backup.sh"
+	inputfile = "submit_new.sh"
 	
 	test=product(*dict_param.values())
 	df_combi = pd.DataFrame(test, columns=dict_param.keys())
@@ -123,7 +123,7 @@ def create_submit_files(dict_param, path_dict):
 		for i,row in enumerate(complete_array):
 			outname=path_dict["input_Data"]+"/submit__"
 			run_str="run"+str(i)
-			output_dir="run"
+			output_dir=path_dict["output"]+"output"
 			parameter_str="-mnd -D run" +str(i)
 			for j,nr in enumerate(row):
 				outname=outname+df_combi.columns[j]+"_"+str(nr)+"__"
@@ -135,7 +135,7 @@ def create_submit_files(dict_param, path_dict):
 			with open(outname,'w') as new_file:
 							with open(inputfile, 'r') as old_file:
 								line = old_file.read()
-								new_file.write(line.replace("runxxx", output_dir).replace("xyz", parameter_str))#.replace("whatever",output_dir)   )
+								new_file.write(line.replace("runxxx", run_str).replace("xyz", parameter_str).replace("whatever",output_dir)   )
 
 
 
@@ -200,7 +200,7 @@ def run_jobs(mode_list,path_dict,no_of_submits):
 		if(start_next_batch==True and any([mode in [1,3] for mode in mode_list])):
 			jobs_available = commit_jobs(path_dict,no_of_submits)
 			start_next_batch=False
-		print("nap time")
+		print("nap")
 		time.sleep(60)	
 		output_name_list=glob.glob(path_dict["output"]+'/*.output')
 		if(len(output_name_list)>=no_of_submits and any([mode in [1,4] for mode in mode_list])):
