@@ -128,7 +128,7 @@ def create_submit_files(dict_param, path_dict):
 			for j,nr in enumerate(row):
 				outname=outname+df_combi.columns[j]+"_"+str(nr)+"__"
 				parameter_str=parameter_str + " -p " +df_combi.columns[j]+" "+str(nr)
-				output_name=output_dir+"__"+df_combi.columns[j]+"_"+str(nr).replace(".","_")			
+				output_name=output_name+"__"+df_combi.columns[j]+"_"+str(nr).replace(".","_")			
 			outname=outname+".sh"
 			#print(outname)
 			#print(parameter_str)
