@@ -122,20 +122,20 @@ def create_submit_files(dict_param, path_dict):
 		complete_array=df_combi.to_numpy()
 		for i,row in enumerate(complete_array):
 			outname=path_dict["input_Data"]+"/submit__"
-			#run_str="run"+str(i)
-			run_str="run"
+			run_str="run"+str(i)
+			output_dir="output"
 			parameter_str="-mnd -D run" +str(i)
 			for j,nr in enumerate(row):
 				outname=outname+df_combi.columns[j]+"_"+str(nr)+"__"
 				parameter_str=parameter_str + " -p " +df_combi.columns[j]+" "+str(nr)
-				run_str=run_str+"__"+df_combi.columns[j]+"_"+str(nr)			
+				output_dir=output_dir+"__"+df_combi.columns[j]+"_"+str(nr)			
 			outname=outname+".sh"
 			#print(outname)
 			#print(parameter_str)
 			with open(outname,'w') as new_file:
 							with open(inputfile, 'r') as old_file:
 								line = old_file.read()
-								new_file.write(line.replace("runxxx", run_str).replace("xyz", parameter_str))
+								new_file.write(line.replace("runxxx", run_str).replace("xyz", parameter_str).replace("whatever",output_dir)   )
 
 
 def create_submit_track_file(path_dict):
@@ -187,23 +187,18 @@ def commit_jobs(path_dict, no_of_submits):
 def manage_output(path_dict):
 	output_name_list=glob.glob(path_dict["output"]+'/*.output')
 	print("output name list:", output_name_list)
+	#gets the current path to return later
+
 	current_path=os.getcwd()
 	print(current_path)
 
-	test_run_number = 5
 	
 	if(len(output_name_list)!=0):
 		for output_dir in output_name_list:
-			#gets the current path to return later
 			
 			#gets the run number from the dir name
 			run_file_name=glob.glob(output_dir+'/run*')[0]
 			run_parameters=(run_file_name.split("run")[1])
-
-			#get the parameters for the run number from csv
-			#insert code here:
-
-
 
 			print("Run file name: "+ run_file_name)
 			print("Run parameter: ",run_parameters)
@@ -216,15 +211,9 @@ def manage_output(path_dict):
 			os.chdir(current_path)
 			#copys the spectrum into the spectra_data dir and changes its name according to the run number
 			shutil.copy(run_file_name +"/spectrum.pl ",path_dict["spectra_data"]+"/"+run_parameters+".pl" )
-			
+			#moves the complete output dir into the finished 
+			shutil.move(output_dir,path_dict["finished_outputs"]+"/submits_"+run_parameters+".output" )
 
-
-
-			os.system("cp "+ run_file_name +"/spectrum.pl " 
-				+ "./spectra_data/spectrum"+str(run_number)+".pl") 
-				#moves the complete output dir into the finished 
-			os.system("mv "+ output_dir + " outputs/finished/submit"+str(run_number)+".output")
-			
 			print("\n \n")
 		return True # new outputs could be managed
 	else:

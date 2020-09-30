@@ -1164,3 +1164,8 @@ machine_learning/ML_get_parameter_bucket_inga/Third try/trial_ec49f8286829ac8cc8
 machine_learning/ML_get_parameter_bucket_inga/Third try/trial_eecbbcebc1a96369070867b34dc23ea5/checkpoints/epoch_0/checkpoint
 machine_learning/ML_get_parameter_bucket_inga/Third try/trial_f302976b0e3f3fc6c546311381a964a6/checkpoints/epoch_0/checkpoint
 *.sh
+input/test/all_256_combinations.csv
+input/test/all_10_combinations.csv
+input/test/input_Data/pyr4.inp
+input/test/input_Data/pyrmod4.op
+input/test/all_256_combinations.csv
