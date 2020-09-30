@@ -200,6 +200,7 @@ def run_jobs(mode_list,path_dict,no_of_submits):
 		if(start_next_batch==True and any([mode in [1,3] for mode in mode_list])):
 			jobs_available = commit_jobs(path_dict,no_of_submits)
 			start_next_batch=False
+		print("nap time")
 		time.sleep(60)	
 		output_name_list=glob.glob(path_dict["output"]+'/*.output')
 		if(len(output_name_list)>=no_of_submits and any([mode in [1,4] for mode in mode_list])):
