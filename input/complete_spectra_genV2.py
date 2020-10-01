@@ -288,8 +288,8 @@ def spectra_analysis(path_dict,peak_height_for_spectra):
 	data_file_list=glob.glob(path_dict["spectra_data"]+"/*.pl")
 	#print(data_file_list)
 	if(len(data_file_list)>=1):
-		if os.path.exists(path_dict["working_directory"]+"RENAME_THIS_AFTERWARDS_New_Peak_list.csv"):
-			complete_df=pd.read_csv(path_dict["working_directory"]+"RENAME_THIS_AFTERWARDS_New_Peak_list.csv")
+		if os.path.exists(path_dict["working_directory"]+"/RENAME_THIS_AFTERWARDS_New_Peak_list.csv"):
+			complete_df=pd.read_csv(path_dict["working_directory"]+"/RENAME_THIS_AFTERWARDS_New_Peak_list.csv")
 		else:
 			complete_df=pd.DataFrame()
 		for data_file_str in data_file_list:
