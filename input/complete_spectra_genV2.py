@@ -303,6 +303,7 @@ def spectra_analysis(path_dict,peak_height_for_spectra):
 			#print(label_dict)
 
 			#get peaks from spectrum
+			print(data_file_str)
 			df = pd.read_csv(data_file_str,sep="   ",header =2,engine='python')
 			df=df.dropna(1) #remove all na entrys
 			df.rename(columns={'#': 'Energy',' Energy':'g1','Unnamed: 2':'g2','Unnamed: 3':'g3'}, 
