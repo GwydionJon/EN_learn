@@ -143,6 +143,11 @@ def create_submit_files(dict_param, path_dict):
 
 def commit_jobs(path_dict, no_of_submits):
 	all_input_data=glob.glob(path_dict["input_Data"]+'/*.sh')
+	all_input_data_long_path=[os.path.abspath(input) for input in all_input_data]
+	print(all_input_data[0])
+	print(all_input_data_long_path[0])
+
+
 	current_path=os.getcwd()
 
 	#change directory to have output in the right place
@@ -155,10 +160,8 @@ def commit_jobs(path_dict, no_of_submits):
 		if(len(all_input_data)<=no_of_submits):
 			no_of_submits=len(all_input_data)
 
-		for i in range(no_of_submits):
-			current_submission_file=all_input_data[i].replace("test","..")
-			os.system("sbatch "+ current_submission_file) 
-			shutil.move(current_submission_file, "../../"+path_dict["finished_input"])
+		for submit in range(no_of_submits):
+			os.system("sbatch "+ submit) 
 		print("submitting file")
 		os.chdir(current_path)
 		return True

@@ -47,7 +47,7 @@ srun $myexec $run $myinp.inp
 mkdir -p /tmpa/$USER
 OUTPUT_PATH="/tmpa/$USER/$outname.output"
 mkdir $OUTPUT_PATH
-LINK_OUTDIR="$START_DIR/$outname.output"
+LINK_OUTDIR="$START_DIR/test/$outname.output"
 cp -r $RUN_PATH/* $OUTPUT_PATH || exit 1
 
 # remove data on /scratch
