@@ -160,8 +160,8 @@ def commit_jobs(path_dict, no_of_submits):
 			no_of_submits=len(all_input_data)
 
 		for i in range(no_of_submits):
-			print(str(all_input_data[i]))
-			os.system("sbatch "+ all_input_data[i]) 
+			print(str(all_input_data_long_path[i]))
+			os.system("sbatch "+ all_input_data_long_path[i]) 
 		print("submitting file")
 		os.chdir(current_path)
 		return True
