@@ -144,15 +144,15 @@ def create_submit_files(dict_param, path_dict):
 def commit_jobs(path_dict, no_of_submits):
 	all_input_data=glob.glob(path_dict["input_Data"]+'/*.sh')
 	all_input_data_long_path=[os.path.abspath(input) for input in all_input_data]
-	print("all data:",all_input_data[0])
-	print("all input long",all_input_data_long_path[0])
+	#print("all data:",all_input_data[0])
+	#print("all input long",all_input_data_long_path[0])
 
 
 	current_path=os.getcwd()
 
 	#change directory to have output in the right place
 
-	print("current",current_path)
+	#print("current",current_path)
 	if(len(all_input_data)!=0):
 		os.chdir(path_dict["output"])
 
@@ -177,7 +177,7 @@ def manage_output(path_dict,output_name_list):
 	#gets the current path to return later
 
 	current_path=os.getcwd()
-	print(current_path)
+	print("current",current_path)
 
 	
 	if(len(output_name_list)!=0):
