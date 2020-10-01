@@ -92,8 +92,8 @@ def get_input_data():
 	if(any([mode in [1,2,3,4,5] for mode in mode_list])):
 		bool_directory=input("Do you wish to choose a specific directory? (if not \"test\" will be used) y/n\n")
 
-	if(bool_directory=='y'):
-		working_directory=input("Enter working directory\n")
+		if(bool_directory=='y'):
+			working_directory=input("Enter working directory\n")
 	else:
 		working_directory="test"
 	if(any([mode in [1,3] for mode in mode_list])):
@@ -428,7 +428,7 @@ if(any([mode in [5] for mode in mode_list])):
 
 
 if(any([mode in [666] for mode in mode_list])):
-	answer_sure=input("Are you sure you want to run the clean up program for the tmpe directory? yes/no")
+	answer_sure=input("Are you sure you want to run the clean up program for the tmpe directory? yes/no\n")
 	if(answer_sure=="yes"):
 		get_current_user=os.path.dirname(os.path.realpath(__file__))
 		print(get_current_user)
