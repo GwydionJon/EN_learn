@@ -437,8 +437,9 @@ if(any([mode in [666] for mode in mode_list])):
 		if(user_correct=="yes"):
 			os.chdir("/tmpa/"+current_user)
 			all_files_to_clean=glob.glob("*.output")
-			print("The following files are going to be deleted:")
+			print("The following files are going to be deleted:\n")
 			print(all_files_to_clean)
-			is_that_correct=input("Is that correct? yes/no")
+			is_that_correct=input("Is that correct? yes/no\n")
 			if(is_that_correct=="yes"):
-				shutil.rmtree(all_files_to_clean)
+				for remove_file in all_files_to_clean:
+					shutil.rmtree(remove_file)
