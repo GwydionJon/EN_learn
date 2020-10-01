@@ -128,7 +128,7 @@ def create_submit_files(dict_param, path_dict):
 			for j,nr in enumerate(row):
 				outname=outname+"__"+df_combi.columns[j]+"_"+str(nr)
 				parameter_str=parameter_str + " -p " +df_combi.columns[j]+" "+str(nr)
-				output_name=output_name+df_combi.columns[j]+"_"+str(nr).replace(".","_")			
+				output_name=output_name+"++"+df_combi.columns[j]+"_"+str(nr).replace(".","_")			
 			outname=outname+".sh"
 			
 			#print(outname)
@@ -186,31 +186,30 @@ def manage_output(path_dict,output_name_list):
 	print("current",current_path)
 
 	
-	if(len(output_name_list)!=0):
-		for output_dir in output_name_list:
-			
-			#gets the run number from the dir name
-			run_file_name=glob.glob(output_dir+'/pyr4')[0]
-			print("run name:",run_file_name)
-			print("output_name:",output_dir )
-			run_parameters=(run_file_name.split("__")[1].split(".")[0])
+	for output_dir in output_name_list:
+		
+		#gets the run number from the dir name
+		run_file_name=glob.glob(output_dir+'/pyr4')[0]
+		print("run name:",run_file_name)
+		print("output_name:",output_dir )
+		run_parameters=(run_file_name.split("__")[1].split(".")[0])
 
-			print("Run file name: "+ run_file_name)
-			print("Run parameter: ",run_parameters)
-			
-			#change dir for autospec
-			os.chdir(run_file_name)
-			os.system("autospec85 -e -0.2258 eV  -1.0 1.0 eV 30 1")
-						
-			#return to previous dir
-			os.chdir(current_path)
-			#copys the spectrum into the spectra_data dir and changes its name according to the run number
-			shutil.copy(run_file_name +"/spectrum.pl",path_dict["spectra_data"]+"/"+run_parameters+".pl" )
-			#moves the complete output dir into the finished 
-			shutil.move(output_dir,path_dict["finished_outputs"]+"/submits_"+run_parameters+".output" )
+		print("Run file name: "+ run_file_name)
+		print("Run parameter: ",run_parameters)
+		
+		#change dir for autospec
+		os.chdir(run_file_name)
+		os.system("autospec85 -e -0.2258 eV  -1.0 1.0 eV 30 1")
+					
+		#return to previous dir
+		os.chdir(current_path)
+		#copys the spectrum into the spectra_data dir and changes its name according to the run number
+		shutil.copy(run_file_name +"/spectrum.pl",path_dict["spectra_data"]+"/"+run_parameters+".pl" )
+		#moves the complete output dir into the finished 
+		shutil.move(output_dir,path_dict["finished_outputs"]+"/submits_"+run_parameters+".output" )
 
-			print("\n \n")
-	
+		print("\n \n")
+
 			
 
 
@@ -218,7 +217,7 @@ def manage_output(path_dict,output_name_list):
 def run_jobs(mode_list,path_dict,no_of_submits):
 	jobs_available=True
 	start_next_batch=True
-	while(jobs_available==True):
+	while(jobs_available==True and any([mode in [1,3,4] for mode in mode_list])):
 		#only start new batch when last is finished and mode 1 or 3 was chosen
 		if(start_next_batch==True and any([mode in [1,3] for mode in mode_list])):
 			jobs_available = commit_jobs(path_dict,no_of_submits)
@@ -228,11 +227,25 @@ def run_jobs(mode_list,path_dict,no_of_submits):
 			print("nap")
 			time.sleep(60)	
 		output_name_list=glob.glob(path_dict["output"]+'/*.output')
-		if(len(output_name_list)>=no_of_submits and any([mode in [1,4] for mode in mode_list])):
+		if(len(output_name_list)>=1 and any([mode in [1,4] for mode in mode_list])):
 			manage_output(path_dict,output_name_list)
 			start_next_batch=True
 
 
+	##additional check if number of spectra==numer of done jobs.
+	while(len(glob.glob(path_dict["spectra_data"]+'/*.pl'))!=
+			len(glob.glob(path_dict["finished_input"]+'/*.sh'))
+			and any([mode in [1,3] for mode in mode_list]) ):
+		output_name_list=glob.glob(path_dict["output"]+'/*.output')
+		if(len(output_name_list)>=no_of_submits and any([mode in [1,4] for mode in mode_list])):
+			manage_output(path_dict,output_name_list)
+			start_next_batch=True
+		print("nap")
+		time.sleep(45)	
+
+	#after all is completed the spectras can be analyzed
+	if(any([mode in [1,5] for mode in mode_list])):
+		print("analyze spectra")
 
 
 
@@ -306,7 +319,7 @@ if(any([mode in [1,2] for mode in mode_list])):
 	
 #all and send to server
 
-if(any([mode in [1,3,4] for mode in mode_list])):
+if(any([mode in [1,3,4,5] for mode in mode_list])):
 
 	#check if needed files for calculations are present in the same dir as this file. if not throw exepction
 	if(os.path.exists("pyr4.inp")==False):
