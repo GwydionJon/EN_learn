@@ -433,7 +433,7 @@ if(any([mode in [666] for mode in mode_list])):
 	if(answer_sure=="yes"):
 		get_current_user=os.path.dirname(os.path.realpath(__file__))
 		current_user=get_current_user.split("home/")[1].split("/")[0]
-		user_correct=input("Is" + current_user +" the current user? yes/no\n")
+		user_correct=input("Is " + current_user +" the current user? yes/no\n")
 		if(user_correct=="yes"):
-			all_files_to_clean=glob.glob("/tmpe/"+current_user+"/*")
+			all_files_to_clean=glob.glob("/tmpa/"+current_user+"/*")
 			print(all_files_to_clean)
