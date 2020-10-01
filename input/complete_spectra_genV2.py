@@ -184,7 +184,9 @@ def manage_output(path_dict,output_name_list):
 		for output_dir in output_name_list:
 			
 			#gets the run number from the dir name
-			run_file_name=glob.glob(output_dir+'/run*')[0]
+			run_file_name=glob.glob(output_dir+'/pyr4')[0]
+			print("run name:",run_file_name)
+			print("output_name:",output_dir )
 			run_parameters=(run_file_name.split("run")[1])
 
 			print("Run file name: "+ run_file_name)
@@ -215,8 +217,10 @@ def run_jobs(mode_list,path_dict,no_of_submits):
 		if(start_next_batch==True and any([mode in [1,3] for mode in mode_list])):
 			jobs_available = commit_jobs(path_dict,no_of_submits)
 			start_next_batch=False
-		print("nap")
-		time.sleep(60)	
+		#only wait if batches should be commited (mode 1,3)
+		if(any([mode in [1,3] for mode in mode_list])):
+			print("nap")
+			time.sleep(60)	
 		output_name_list=glob.glob(path_dict["output"]+'/*.output')
 		if(len(output_name_list)>=no_of_submits and any([mode in [1,4] for mode in mode_list])):
 			manage_output(path_dict,output_name_list)
