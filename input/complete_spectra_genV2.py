@@ -237,7 +237,7 @@ def run_jobs(mode_list,path_dict,no_of_submits,peak_height_for_spectra):
 			manage_output(path_dict,output_name_list)
 			if(any([mode in [1,5] for mode in mode_list])):
 
-			spectra_analysis(path_dict,peak_height_for_spectra)
+				spectra_analysis(path_dict,peak_height_for_spectra)
 
 			start_next_batch=True
 
@@ -245,7 +245,7 @@ def run_jobs(mode_list,path_dict,no_of_submits,peak_height_for_spectra):
 	##additional check if number of spectra==numer of done jobs.
 	while((len(glob.glob(path_dict["spectra_data_finished"]+'/*.pl'))!=
 			len(glob.glob(path_dict["finished_input"]+'/*.sh'))  or 
-			len(glob.glob(path_dict["spectra_dspectra_dataata_finished"]+'/*.pl'))!=
+			len(glob.glob(path_dict["spectra_data"]+'/*.pl'))!=
 			len(glob.glob(path_dict["finished_input"]+'/*.sh') )
 			 )
 			and any([mode in [1,3] for mode in mode_list]) ):
@@ -253,7 +253,7 @@ def run_jobs(mode_list,path_dict,no_of_submits,peak_height_for_spectra):
 		if(len(output_name_list)>=no_of_submits and any([mode in [1,4] for mode in mode_list])):
 			manage_output(path_dict,output_name_list)
 			if(any([mode in [1,5] for mode in mode_list])):
-			spectra_analysis(path_dict,peak_height_for_spectra)
+				spectra_analysis(path_dict,peak_height_for_spectra)
 		print("nap")
 		time.sleep(45)	
 	print("All input files were converted into spectra. \nPreparing for spectra analysis")
@@ -265,7 +265,7 @@ def spectra_analysis(path_dict,peak_height_for_spectra):
 	print("Begin spectra analysis")
 	data_file_list=glob.glob(path_dict["spectra_data"]+"/*.pl")
 	#print(data_file_list)
-	if(len(data_file_list>=1)):
+	if(len(data_file_list)>=1):
 		if os.path.exists(path_dict["working_directory"]+"RENAME_THIS_AFTERWARDS_New_Peak_list.csv"):
 			complete_df=pd.read_csv(path_dict["working_directory"]+"RENAME_THIS_AFTERWARDS_New_Peak_list.csv")
 		else:
@@ -299,12 +299,12 @@ def spectra_analysis(path_dict,peak_height_for_spectra):
 				complete_df=pd.DataFrame(columns=label_dict.keys())
 
 			complete_df=complete_df.append(label_dict,ignore_index=True)
-		
+			shutil.move(data_file_str,path_dict["spectra_data_finished"] )
+
 		print(complete_df.head())
 		complete_df.to_csv(path_dict["working_directory"]+"RENAME_THIS_AFTERWARDS_New_Peak_list.csv",index= False)
 		print("Saved CSV to "+path_dict["working_directory"]+"RENAME_THIS_AFTERWARDS_New_Peak_list.csv")
 		#move finished spectra
-		shutil.move(data_file_list[i],path_dict["spectra_data_finished"] )
 
 
 def setup_dir_structure(path_dict):
@@ -342,11 +342,16 @@ def setup_dir_structure(path_dict):
 		shutil.copy2("./pyrmod4.op",path_dict["output"] )	
 
 
+
+#possible modes
 #'1: create input, send to server, manage output.\n'+
 #'2: create input.\n'+
 #'3: send to server\n'+
 #'4: manage output\n'+
 #'5: analyze spectra\n') 
+
+
+
 
 ##############################
 #actual program start
@@ -400,4 +405,5 @@ if(any([mode in [1,3,4,5] for mode in mode_list])):
 #and one standalone spectra analysis 
 #this should be very quick if all spectras have already been analyzed
 if(any([mode in [5] for mode in mode_list])):
+	spectra_analysis(path_dict,peak_height_for_spectra)
 

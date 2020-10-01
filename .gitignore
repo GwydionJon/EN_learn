@@ -1178,3 +1178,6 @@ input/test/spectra_data/++lambda%-0_3333333333333335++delta%0_6666666666666665.p
 input/test/spectra_data/++lambda%-3_0++delta%-2_0.pl
 input/test/spectra_data/++lambda%5_0++delta%0_6666666666666665.pl
 input/testRENAME_THIS_AFTERWARDS_New_Peak_list.csv
+input/test/spectra_data_finished/++lambda%-0_3333333333333335++delta%0_6666666666666665.pl
+input/test/spectra_data_finished/++lambda%-3_0++delta%-2_0.pl
+input/test/spectra_data_finished/++lambda%5_0++delta%0_6666666666666665.pl
