@@ -250,10 +250,11 @@ def setup_dir_structure(path_dict):
 		if(os.path.exists("pyrmod4.op")==False):
 			sys.exit("this program can not function if pyrmod4.op is missing")
 
-		#copy pyr4.inp and pyrmod4.op into the input_Data dir
+		#copy pyr4.inp and pyrmod4.op into the input_Data and outputdir
 		shutil.copy2("./pyr4.inp",path_dict["input_Data"] )
 		shutil.copy2("./pyrmod4.op",path_dict["input_Data"] )	
-
+		shutil.copy2("./pyr4.inp",path_dict["output"] )
+		shutil.copy2("./pyrmod4.op",path_dict["output"] )	
 
 
 #'1: create input, send to server, manage output.\n'+
