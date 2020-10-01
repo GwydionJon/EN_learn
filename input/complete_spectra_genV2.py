@@ -423,7 +423,7 @@ if(any([mode in [1,3,4,5] for mode in mode_list])):
 
 #and one standalone spectra analysis 
 #this should be very quick if all spectras have already been analyzed
-if(any([mode in [5] for mode in mode_list])):
+if(any([mode in [1,5] for mode in mode_list])):
 	spectra_analysis(path_dict,peak_height_for_spectra)
 
 
@@ -432,4 +432,8 @@ if(any([mode in [666] for mode in mode_list])):
 	answer_sure=input("Are you sure you want to run the clean up program for the tmpe directory? yes/no\n")
 	if(answer_sure=="yes"):
 		get_current_user=os.path.dirname(os.path.realpath(__file__))
-		print(get_current_user.split("home/")[1].split("/")[0])
+		current_user=get_current_user.split("home/")[1].split("/")[0]
+		user_correct=input("Is" + current_user +" the current user? yes/no\n")
+		if(user_correct=="yes"):
+			all_files_to_clean=glob.glob("/tmpe/"+current_user+"/*")
+			print(all_files_to_clean)
