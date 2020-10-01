@@ -154,13 +154,13 @@ def commit_jobs(path_dict, no_of_submits):
 	os.chdir(path_dict["output"])
 
 	print(current_path)
-	print(all_input_data[0].replace("test",".."))
+	print(all_input_data[0])
 	if(len(all_input_data)!=0):
 		print("Total of ", len(all_input_data), " jobs remaining.")
 		if(len(all_input_data)<=no_of_submits):
 			no_of_submits=len(all_input_data)
 
-		for submit in range(no_of_submits):
+		for submit in no_of_submits:
 			os.system("sbatch "+ submit) 
 		print("submitting file")
 		os.chdir(current_path)
