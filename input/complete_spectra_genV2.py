@@ -440,5 +440,4 @@ if(any([mode in [666] for mode in mode_list])):
 			print(all_files_to_clean)
 			is_that_correct=input("Is that correct?")
 			if(is_that_correct==True):
-				for file in all_files_to_clean:
-					shutil.rmtree(file)
+				shutil.rmtree(all_files_to_clean)
