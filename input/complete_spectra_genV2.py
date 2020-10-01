@@ -34,7 +34,8 @@ def get_input_data():
 					'2: create input.\n'+
 					'3: send to server\n'+
 					'4: manage output\n'+
-					'5: analyze spectra\n') 
+					'5: analyze spectra\n'+
+					'666: waste cleanup (clean tmpa') 
 	
 	#transforms input into list of int
 	mode_list=[int(mode_str)for mode_str in mode_string.split(",")]
@@ -242,20 +243,37 @@ def run_jobs(mode_list,path_dict,no_of_submits,peak_height_for_spectra):
 			start_next_batch=True
 
 
-	##additional check if number of spectra==numer of done jobs.
-	while((len(glob.glob(path_dict["spectra_data_finished"]+'/*.pl'))!=
-			len(glob.glob(path_dict["finished_input"]+'/*.sh'))  or 
-			len(glob.glob(path_dict["spectra_data"]+'/*.pl'))!=
-			len(glob.glob(path_dict["finished_input"]+'/*.sh') )
-			 )
-			and any([mode in [1,3] for mode in mode_list]) ):
-		output_name_list=glob.glob(path_dict["output"]+'/*.output')
-		if(len(output_name_list)>=no_of_submits and any([mode in [1,4] for mode in mode_list])):
-			manage_output(path_dict,output_name_list)
-			if(any([mode in [1,5] for mode in mode_list])):
+	#aditional control depending on the chosen mode and
+	if(any([mode in [4] for mode in mode_list])):
+		while(len(glob.glob(path_dict["spectra_data"]+'/*.pl'))!=
+			len(glob.glob(path_dict["finished_input"]+'/*.sh'))
+			):
+			
+			if(len(output_name_list)>=1):
+				manage_output(path_dict,output_name_list)
+			
+			print("nap for mode 4")
+			time.sleep(45)
+
+	elif(any([mode in [1] for mode in mode_list])):
+		while(len(glob.glob(path_dict["spectra_data_finished"]+'/*.pl'))!=
+			len(glob.glob(path_dict["finished_input"]+'/*.sh'))
+			):
+			
+			if(len(output_name_list)>=1):
+				manage_output(path_dict,output_name_list)
 				spectra_analysis(path_dict,peak_height_for_spectra)
-		print("nap")
-		time.sleep(45)	
+
+			print("nap for mode 4")
+			time.sleep(45)	
+			
+			
+
+
+
+
+
+
 	print("All input files were converted into spectra. \nPreparing for spectra analysis")
 	#after all is completed the spectras can be analyzed
 	
@@ -407,3 +425,9 @@ if(any([mode in [1,3,4,5] for mode in mode_list])):
 if(any([mode in [5] for mode in mode_list])):
 	spectra_analysis(path_dict,peak_height_for_spectra)
 
+
+if(any([mode in [666] for mode in mode_list]):
+	answer_sure=input("Are you sure you want to run the clean up program for the tmpe directory? yes/no")
+	if(answer_sure=="yes"):
+		get_current_user=os.path.dirname(os.path.realpath(__file__))
+		print(get_current_user)
