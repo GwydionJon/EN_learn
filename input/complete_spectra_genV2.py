@@ -121,12 +121,12 @@ def create_submit_files(dict_param, path_dict):
 		
 		complete_array=df_combi.to_numpy()
 		for i,row in enumerate(complete_array):
-			outname=path_dict["input_Data"]+"/submit__"
+			outname=path_dict["input_Data"]+"/submit"
 			run_str="run"+str(i)
 			output_name="output"   
 			parameter_str="-mnd -D run" +str(i)
 			for j,nr in enumerate(row):
-				outname=outname+df_combi.columns[j]+"_"+str(nr)+"__"
+				outname=outname+"__"+df_combi.columns[j]+"_"+str(nr)
 				parameter_str=parameter_str + " -p " +df_combi.columns[j]+" "+str(nr)
 				output_name=output_name+"__"+df_combi.columns[j]+"_"+str(nr).replace(".","_")			
 			outname=outname+".sh"
@@ -165,6 +165,11 @@ def commit_jobs(path_dict, no_of_submits):
 			os.system("sbatch "+ all_input_data_long_path[i]) 
 		print("submitting file")
 		os.chdir(current_path)
+		for i in range(no_of_submits):
+			shutil.move(all_input_data_long_path[i],path_dict["finished_input"] )
+
+
+
 		return True
 	else:
 		print("No jobs remaining.")
@@ -187,7 +192,7 @@ def manage_output(path_dict,output_name_list):
 			run_file_name=glob.glob(output_dir+'/pyr4')[0]
 			print("run name:",run_file_name)
 			print("output_name:",output_dir )
-			run_parameters=(run_file_name.split("__")[1].split(".")[0])
+			run_parameters=(run_file_name.split("__")[1:].split(".")[0])
 
 			print("Run file name: "+ run_file_name)
 			print("Run parameter: ",run_parameters)

@@ -1171,3 +1171,5 @@ input/test/input_Data/pyrmod4.op
 input/test/all_256_combinations.csv
 input/test/all_5_combinations.csv
 input/test/all_3_combinations.csv
+input/test/output/pyr4.inp
+input/test/output/pyrmod4.op
