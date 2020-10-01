@@ -35,7 +35,7 @@ def get_input_data():
 					'3: send to server\n'+
 					'4: manage output\n'+
 					'5: analyze spectra\n'+
-					'666: cleanup (clean tmpa)\n') 
+					'666: cleanup (clean tmpa) !This cleanup is not included in mode 1 and has to be done seperate or added (1,666)! \n') 
 	
 	#transforms input into list of int
 	mode_list=[int(mode_str)for mode_str in mode_string.split(",")]
@@ -94,6 +94,8 @@ def get_input_data():
 
 		if(bool_directory=='y'):
 			working_directory=input("Enter working directory\n")
+		else:
+			working_directory="test"
 	else:
 		working_directory="test"
 	if(any([mode in [1,3] for mode in mode_list])):
@@ -123,6 +125,7 @@ def create_submit_files(dict_param, path_dict):
 	
 	if(len(glob.glob(path_dict["working_directory"]+"/*.csv"  ))!=0):
 		print("There is already a csv file with parameters present! No new data will be generated!")
+		print("Instead the previous submissions will be continued if mode 1 or 3 were chosen.")
 	else:
 		df_combi.to_csv(path_dict["working_directory"]+"/all_"+str(len(df_combi))+"_combinations.csv")
 		
@@ -321,8 +324,8 @@ def spectra_analysis(path_dict,peak_height_for_spectra):
 			shutil.move(data_file_str,path_dict["spectra_data_finished"] )
 
 		print(complete_df.head())
-		complete_df.to_csv(path_dict["working_directory"]+"RENAME_THIS_AFTERWARDS_New_Peak_list.csv",index= False)
-		print("Saved CSV to "+path_dict["working_directory"]+"RENAME_THIS_AFTERWARDS_New_Peak_list.csv")
+		complete_df.to_csv(path_dict["working_directory"]+"/RENAME_THIS_AFTERWARDS_New_Peak_list.csv",index= False)
+		print("Saved CSV to "+path_dict["working_directory"]+"/RENAME_THIS_AFTERWARDS_New_Peak_list.csv")
 		#move finished spectra
 
 
