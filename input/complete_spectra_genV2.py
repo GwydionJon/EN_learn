@@ -187,7 +187,7 @@ def manage_output(path_dict,output_name_list):
 			run_file_name=glob.glob(output_dir+'/pyr4')[0]
 			print("run name:",run_file_name)
 			print("output_name:",output_dir )
-			run_parameters=(run_file_name.split("run")[1])
+			run_parameters=(run_file_name.split("__")[1].split(".")[0])
 
 			print("Run file name: "+ run_file_name)
 			print("Run parameter: ",run_parameters)
