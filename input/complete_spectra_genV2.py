@@ -199,7 +199,7 @@ def manage_output(path_dict,output_name_list):
 			#return to previous dir
 			os.chdir(current_path)
 			#copys the spectrum into the spectra_data dir and changes its name according to the run number
-			shutil.copy(run_file_name +"/spectrum.pl ",path_dict["spectra_data"]+"/"+run_parameters+".pl" )
+			shutil.copy(run_file_name +"/spectrum.pl",path_dict["spectra_data"]+"/"+run_parameters+".pl" )
 			#moves the complete output dir into the finished 
 			shutil.move(output_dir,path_dict["finished_outputs"]+"/submits_"+run_parameters+".output" )
 
