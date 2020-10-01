@@ -426,7 +426,7 @@ if(any([mode in [5] for mode in mode_list])):
 	spectra_analysis(path_dict,peak_height_for_spectra)
 
 
-if(any([mode in [666] for mode in mode_list]):
+if(any([mode in [666] for mode in mode_list])):
 	answer_sure=input("Are you sure you want to run the clean up program for the tmpe directory? yes/no")
 	if(answer_sure=="yes"):
 		get_current_user=os.path.dirname(os.path.realpath(__file__))
