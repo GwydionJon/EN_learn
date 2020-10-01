@@ -12,7 +12,7 @@ myinp="pyr4"
 myop="pyrmod4"
 # we will make use of altering parameters via the command line
 run="xyz"
-#run="-mnd"
+#run="-mndZZZZZZZZZ"
 outname='whatever'
 source ~/.bashrc
 myexec="mctdh85"
