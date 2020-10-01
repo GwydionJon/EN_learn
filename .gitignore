@@ -1173,3 +1173,8 @@ input/test/all_5_combinations.csv
 input/test/all_3_combinations.csv
 input/test/output/pyr4.inp
 input/test/output/pyrmod4.op
+input/test.csv
+input/test/spectra_data/++lambda%-0_3333333333333335++delta%0_6666666666666665.pl
+input/test/spectra_data/++lambda%-3_0++delta%-2_0.pl
+input/test/spectra_data/++lambda%5_0++delta%0_6666666666666665.pl
+input/testRENAME_THIS_AFTERWARDS_New_Peak_list.csv

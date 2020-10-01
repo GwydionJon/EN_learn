@@ -221,7 +221,7 @@ def manage_output(path_dict,output_name_list):
 
 
 
-def run_jobs(mode_list,path_dict,no_of_submits):
+def run_jobs(mode_list,path_dict,no_of_submits,peak_height_for_spectra):
 	jobs_available=True
 	start_next_batch=True
 	while(jobs_available==True and any([mode in [1,3,4] for mode in mode_list])):
@@ -230,23 +230,30 @@ def run_jobs(mode_list,path_dict,no_of_submits):
 			jobs_available = commit_jobs(path_dict,no_of_submits)
 			start_next_batch=False
 		#only wait if batches should be commited (mode 1,3)
-		if(any([mode in [1,3] for mode in mode_list])):
 			print("nap")
 			time.sleep(60)	
 		output_name_list=glob.glob(path_dict["output"]+'/*.output')
 		if(len(output_name_list)>=1 and any([mode in [1,4] for mode in mode_list])):
 			manage_output(path_dict,output_name_list)
+			if(any([mode in [1,5] for mode in mode_list])):
+
+			spectra_analysis(path_dict,peak_height_for_spectra)
+
 			start_next_batch=True
 
 
 	##additional check if number of spectra==numer of done jobs.
-	while(len(glob.glob(path_dict["spectra_data"]+'/*.pl'))!=
-			len(glob.glob(path_dict["finished_input"]+'/*.sh'))
+	while((len(glob.glob(path_dict["spectra_data_finished"]+'/*.pl'))!=
+			len(glob.glob(path_dict["finished_input"]+'/*.sh'))  or 
+			len(glob.glob(path_dict["spectra_dspectra_dataata_finished"]+'/*.pl'))!=
+			len(glob.glob(path_dict["finished_input"]+'/*.sh') )
+			 )
 			and any([mode in [1,3] for mode in mode_list]) ):
 		output_name_list=glob.glob(path_dict["output"]+'/*.output')
 		if(len(output_name_list)>=no_of_submits and any([mode in [1,4] for mode in mode_list])):
 			manage_output(path_dict,output_name_list)
-			start_next_batch=True
+			if(any([mode in [1,5] for mode in mode_list])):
+			spectra_analysis(path_dict,peak_height_for_spectra)
 		print("nap")
 		time.sleep(45)	
 	print("All input files were converted into spectra. \nPreparing for spectra analysis")
@@ -257,7 +264,47 @@ def run_jobs(mode_list,path_dict,no_of_submits):
 def spectra_analysis(path_dict,peak_height_for_spectra):
 	print("Begin spectra analysis")
 	data_file_list=glob.glob(path_dict["spectra_data"]+"/*.pl")
-	print(data_file_list)
+	#print(data_file_list)
+	if(len(data_file_list>=1)):
+		if os.path.exists(path_dict["working_directory"]+"RENAME_THIS_AFTERWARDS_New_Peak_list.csv"):
+			complete_df=pd.read_csv(path_dict["working_directory"]+"RENAME_THIS_AFTERWARDS_New_Peak_list.csv")
+		else:
+			complete_df=pd.DataFrame()
+		for data_file_str in data_file_list:
+			#extract the variables names and their values from the name
+			varialbes_names_value=data_file_str.split(".")[0].split("++")[1:]
+			#print(varialbes_names_value)
+			label_dict={}
+			for variable in varialbes_names_value:
+				label_dict[variable.split("%")[0]]=variable.split("%")[1]
+				#this holds all names and values for the different label
+			#print(label_dict)
+
+			#get peaks from spectrum
+			df = pd.read_csv(data_file_str,sep="   ",header =2,engine='python')
+			df=df.dropna(1) #remove all na entrys
+			df.rename(columns={'#': 'Energy',' Energy':'g1','Unnamed: 2':'g2','Unnamed: 3':'g3'}, 
+					inplace=True) 
+			df_maxima=df.iloc[find_peaks(df.g1.values,height=df.g1.max()*peak_height_for_spectra)[0]   ].dropna().drop(columns=['g2','g3'])
+			#print(df_maxima)
+			main_max=df_maxima.nlargest(1,'g1')["Energy"].values[0]
+			#print("\n",main_max)
+			label_dict["main_maximum"]=main_max
+			label_dict["all_maxima"]=(df_maxima["Energy"].values)
+			label_dict["no_of_max"]=(len(df_maxima["Energy"].values))
+			label_dict["Intensity"]=(df_maxima["g1"].values)
+
+			if(complete_df.empty==True):
+
+				complete_df=pd.DataFrame(columns=label_dict.keys())
+
+			complete_df=complete_df.append(label_dict,ignore_index=True)
+		
+		print(complete_df.head())
+		complete_df.to_csv(path_dict["working_directory"]+"RENAME_THIS_AFTERWARDS_New_Peak_list.csv",index= False)
+		print("Saved CSV to "+path_dict["working_directory"]+"RENAME_THIS_AFTERWARDS_New_Peak_list.csv")
+		#move finished spectra
+		shutil.move(data_file_list[i],path_dict["spectra_data_finished"] )
 
 
 def setup_dir_structure(path_dict):
@@ -347,7 +394,10 @@ if(any([mode in [1,3,4,5] for mode in mode_list])):
 	shutil.copy2("./pyr4.inp",path_dict["input_Data"] )
 	shutil.copy2("./pyrmod4.op",path_dict["input_Data"] )
 
-	run_jobs(mode_list,path_dict,no_of_submits)
+	run_jobs(mode_list,path_dict,no_of_submits,peak_height_for_spectra)
 	#maybe add this to the workflow
-	spectra_analysis(path_dict,peak_height_for_spectra)
+
+#and one standalone spectra analysis 
+#this should be very quick if all spectras have already been analyzed
+if(any([mode in [5] for mode in mode_list])):
 
