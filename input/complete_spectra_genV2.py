@@ -439,6 +439,6 @@ if(any([mode in [666] for mode in mode_list])):
 			all_files_to_clean=glob.glob("*.output")
 			print("The following files are going to be deleted:")
 			print(all_files_to_clean)
-			is_that_correct=input("Is that correct?")
-			#if(is_that_correct==True):
-			#	shutil.rmtree(all_files_to_clean)
+			is_that_correct=input("Is that correct? yes/no")
+			if(is_that_correct=="yes"):
+				shutil.rmtree(all_files_to_clean)
