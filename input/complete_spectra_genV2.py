@@ -123,13 +123,14 @@ def create_submit_files(dict_param, path_dict):
 		for i,row in enumerate(complete_array):
 			outname=path_dict["input_Data"]+"/submit"
 			run_str="run"+str(i)
-			output_name="output"   
+			output_name="output__"   
 			parameter_str="-mnd -D run" +str(i)
 			for j,nr in enumerate(row):
 				outname=outname+"__"+df_combi.columns[j]+"_"+str(nr)
 				parameter_str=parameter_str + " -p " +df_combi.columns[j]+" "+str(nr)
-				output_name=output_name+"__"+df_combi.columns[j]+"_"+str(nr).replace(".","_")			
+				output_name=output_name+df_combi.columns[j]+"_"+str(nr).replace(".","_")			
 			outname=outname+".sh"
+			
 			#print(outname)
 			#print(parameter_str)
 			with open(outname,'w') as new_file:
@@ -192,7 +193,7 @@ def manage_output(path_dict,output_name_list):
 			run_file_name=glob.glob(output_dir+'/pyr4')[0]
 			print("run name:",run_file_name)
 			print("output_name:",output_dir )
-			run_parameters=(run_file_name.split("__")[1:].split(".")[0])
+			run_parameters=(run_file_name.split("__")[1].split(".")[0])
 
 			print("Run file name: "+ run_file_name)
 			print("Run parameter: ",run_parameters)
