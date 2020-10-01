@@ -151,10 +151,11 @@ def commit_jobs(path_dict, no_of_submits):
 	current_path=os.getcwd()
 
 	#change directory to have output in the right place
-	os.chdir(path_dict["output"])
 
 	print("current",current_path)
 	if(len(all_input_data)!=0):
+		os.chdir(path_dict["output"])
+
 		print("Total of ", len(all_input_data), " jobs remaining.")
 		if(len(all_input_data)<=no_of_submits):
 			no_of_submits=len(all_input_data)
