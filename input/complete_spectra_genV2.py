@@ -8,6 +8,7 @@ from sklearn.utils.extmath import cartesian
 from itertools import product
 import pandas as pd
 import shutil
+from scipy.signal import find_peaks
 
 
 #functions
@@ -97,8 +98,14 @@ def get_input_data():
 		no_of_submits=int(input("Enter number of submits in each run:\n"))
 	else:
 		no_of_submits=0
+
+	if(any([mode in [1,5] for mode in mode_list])):
+		peak_height_for_spectra=float(input("Enter the percentage number (20 = 20%)of peak height that should be added to the csv output:\n"))
+		peak_height_for_spectra=peak_height_for_spectra/100
+	else:
+		peak_height_for_spectra=1
 	
-	return mode_list, dict_param, working_directory, no_of_submits
+	return mode_list, dict_param, working_directory, no_of_submits, peak_height_for_spectra
 
 ###
 #this will first create a dataFrame of all possible combinations for the given parameters and save it as a csv
@@ -128,7 +135,7 @@ def create_submit_files(dict_param, path_dict):
 			for j,nr in enumerate(row):
 				outname=outname+"__"+df_combi.columns[j]+"_"+str(nr)
 				parameter_str=parameter_str + " -p " +df_combi.columns[j]+" "+str(nr)
-				output_name=output_name+"++"+df_combi.columns[j]+"_"+str(nr).replace(".","_")			
+				output_name=output_name+"++"+df_combi.columns[j]+"%"+str(nr).replace(".","_")			
 			outname=outname+".sh"
 			
 			#print(outname)
@@ -242,28 +249,36 @@ def run_jobs(mode_list,path_dict,no_of_submits):
 			start_next_batch=True
 		print("nap")
 		time.sleep(45)	
-
+	print("All input files were converted into spectra. \nPreparing for spectra analysis")
 	#after all is completed the spectras can be analyzed
-	if(any([mode in [1,5] for mode in mode_list])):
-		print("analyze spectra")
+	
 
 
+def spectra_analysis(path_dict,peak_height_for_spectra):
+	print("Begin spectra analysis")
+	data_file_list=glob.glob(path_dict["spectra_data"]+"/*.pl")
+	print(data_file_list)
 
 
 def setup_dir_structure(path_dict):
-		
-	if(os.path.exists(path_dict["working_directory"])==False):
-		os.makedirs(path_dict["working_directory"])
-	if(os.path.exists(path_dict["input_Data"])==False):
-		os.makedirs(path_dict["input_Data"])
-	if(os.path.exists(path_dict["finished_input"])==False):
-		os.makedirs(path_dict["finished_input"])
-	if(os.path.exists(path_dict["output"])==False):
-		os.makedirs(path_dict["output"])
-	if(os.path.exists(path_dict["finished_outputs"])==False):
-		os.makedirs(path_dict["finished_outputs"])
-	if(os.path.exists(path_dict["spectra_data"])==False):
-		os.makedirs(path_dict["spectra_data"])
+	all_dir_keys=path_dict.keys()
+	for key in all_dir_keys:
+		if(os.path.exists(path_dict[key])==False):
+			os.makedirs(path_dict[key])
+
+
+	# if(os.path.exists(path_dict["working_directory"])==False):
+	# 	os.makedirs(path_dict["working_directory"])
+	# if(os.path.exists(path_dict["input_Data"])==False):
+	# 	os.makedirs(path_dict["input_Data"])
+	# if(os.path.exists(path_dict["finished_input"])==False):
+	# 	os.makedirs(path_dict["finished_input"])
+	# if(os.path.exists(path_dict["output"])==False):
+	# 	os.makedirs(path_dict["output"])
+	# if(os.path.exists(path_dict["finished_outputs"])==False):
+	# 	os.makedirs(path_dict["finished_outputs"])
+	# if(os.path.exists(path_dict["spectra_data"])==False):
+	# 	os.makedirs(path_dict["spectra_data"])
 
 	if(any([mode in [1,3,4] for mode in mode_list])):
 
@@ -298,7 +313,7 @@ print(dir_path)
 os.chdir(dir_path)
 
 #get basic setup parameters
-mode_list, dict_param, working_directory, no_of_submits= get_input_data()
+mode_list, dict_param, working_directory, no_of_submits,peak_height_for_spectra= get_input_data()
 
 
 
@@ -308,7 +323,8 @@ path_dict={	"working_directory":working_directory,
 			"finished_outputs": working_directory+"/finished_outputs",
 			"finished_input":working_directory+"/finished_input",
 			"output": working_directory+"/output",
-			"spectra_data": working_directory+"/spectra_data"}
+			"spectra_data": working_directory+"/spectra_data",
+			"spectra_data_finished": working_directory+"/spectra_data_finished"}
 
 setup_dir_structure(path_dict)
 
@@ -331,12 +347,7 @@ if(any([mode in [1,3,4,5] for mode in mode_list])):
 	shutil.copy2("./pyr4.inp",path_dict["input_Data"] )
 	shutil.copy2("./pyrmod4.op",path_dict["input_Data"] )
 
-
-
 	run_jobs(mode_list,path_dict,no_of_submits)
-
-#####potentially redo everything in sending to server
-
-
-
+	#maybe add this to the workflow
+	spectra_analysis(path_dict,peak_height_for_spectra)
 
