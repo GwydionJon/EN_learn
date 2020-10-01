@@ -35,7 +35,7 @@ def get_input_data():
 					'3: send to server\n'+
 					'4: manage output\n'+
 					'5: analyze spectra\n'+
-					'666: waste cleanup (clean tmpa') 
+					'666: cleanup (clean tmpa)\n') 
 	
 	#transforms input into list of int
 	mode_list=[int(mode_str)for mode_str in mode_string.split(",")]
@@ -89,8 +89,9 @@ def get_input_data():
 			sys.exit()
 		print(number_of_files, " Files will be created, if that is not correct please terminate the program now!")
 	#print(dict_param)
-	
-	bool_directory=input("Do you wish to choose a specific directory? y/n\n")
+	if(any([mode in [1,2,3,4,5] for mode in mode_list])):
+		bool_directory=input("Do you wish to choose a specific directory? (if not \"test\" will be used) y/n\n")
+
 	if(bool_directory=='y'):
 		working_directory=input("Enter working directory\n")
 	else:
