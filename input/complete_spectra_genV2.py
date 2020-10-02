@@ -247,12 +247,15 @@ def run_jobs(mode_list,path_dict,no_of_submits,peak_height_for_spectra):
 				spectra_analysis(path_dict,peak_height_for_spectra)
 
 			start_next_batch=True
-		elif(len(glob.glob(path_dict["spectra_data"]+'/*.pl'))==
-			len(glob.glob(path_dict["finished_input"]+'/*.sh') )
+
+		#this shoudl ensure that the program can finish if only mode 3 and 4 are selected
+		elif((len(glob.glob(path_dict["spectra_data"]+'/*.pl'))==
+			len(glob.glob(path_dict["finished_input"]+'/*.sh') ))
 			 or
-			len(glob.glob(path_dict["spectra_data_finished"]+'/*.pl'))==
-			len(glob.glob(path_dict["finished_input"]+'/*.sh'))
-			)   :
+			(len(glob.glob(path_dict["spectra_data_finished"]+'/*.pl'))==
+			len(glob.glob(path_dict["finished_input"]+'/*.sh')))
+			):
+			jobs_available=False
 
 		else:
 			print("No output found")
