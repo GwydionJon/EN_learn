@@ -388,19 +388,21 @@ def spectra_analysis(path_dict,peak_height_for_spectra):
 			print("peak minimum:",df_spectrum.g1.max()*peak_height_for_spectra)
 			df_maxima=df_spectrum.iloc[find_peaks(df_spectrum.g1.values,height=df_spectrum.g1.max()*peak_height_for_spectra)[0]   ].dropna().drop(columns=['g2','g3'])
 			print(df_maxima)
-			print(df_maxima.empty)
-			main_max=df_maxima.nlargest(1,'g1')["Energy"].values[0]
-			#print("\n",main_max)
-			label_dict["main_maximum"]=main_max
-			label_dict["all_maxima"]=(df_maxima["Energy"].values)
-			label_dict["no_of_max"]=(len(df_maxima["Energy"].values))
-			label_dict["Intensity"]=(df_maxima["g1"].values)
 
-			if(complete_df.empty==True):
+			#this should filter out any spectra with small peaks
+			if(len(df_maxima.nlargest(1,'g1')["Energy"].values)>0):
+				main_max=df_maxima.nlargest(1,'g1')["Energy"].values[0]
+				#print("\n",main_max)
+				label_dict["main_maximum"]=main_max
+				label_dict["all_maxima"]=(df_maxima["Energy"].values)
+				label_dict["no_of_max"]=(len(df_maxima["Energy"].values))
+				label_dict["Intensity"]=(df_maxima["g1"].values)
 
-				complete_df=pd.DataFrame(columns=label_dict.keys())
+				if(complete_df.empty==True):
 
-			complete_df=complete_df.append(label_dict,ignore_index=True)
+					complete_df=pd.DataFrame(columns=label_dict.keys())
+
+				complete_df=complete_df.append(label_dict,ignore_index=True)
 			shutil.move(data_file_str,path_dict["spectra_data_finished"] )
 
 		print(complete_df.head())
