@@ -407,7 +407,9 @@ def spectra_analysis(path_dict,peak_height_for_spectra):
 				
 				while(len(df_maxima["Energy"].values) >=20):
 					new_threshold=new_threshold+0.2
-					print(len(df_maxima["Energy"].values, "Maxima were found. Setting limit to ",new_threshold," of the current maximal value" ))
+					print(len(df_maxima["Energy"].values), 
+					"Maxima were found. Setting limit to ",
+					new_threshold," of the current maximal value" )
 
 					df_maxima=df_spectrum.iloc[find_peaks(df_spectrum.g1.values,height=df_spectrum.g1.max()*new_threshold)[0]   ].dropna().drop(columns=['g2','g3'])
 
