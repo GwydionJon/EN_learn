@@ -225,7 +225,7 @@ def manage_output(path_dict,output_name_list):
 		print("\n \n")
 
 def run_jobs_ordered(mode_list,path_dict,no_of_submits,peak_height_for_spectra):
-	
+	start_next_batch=True
 	completed_all_tasks=False
 	while(completed_all_tasks==False):
 		
