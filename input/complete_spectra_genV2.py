@@ -240,7 +240,7 @@ def run_jobs_ordered(mode_list,path_dict,no_of_submits,peak_height_for_spectra):
 		#number of submitted files.
 		output_name_list=glob.glob(path_dict["output"]+'/*.output')
 		#exeption if mode 3 not included:
-		if(any([mode not in [1,3] for mode in mode_list])):
+		if(mode_list==[4,5] or mode_list==[4] or mode_list==[5]):
 			print("Warning: mode 3 not included. The program has no knowledge about how many submissions are expected")
 			actual_submits=len(output_name_list)
 		print("This many outputs are prensent:",len(output_name_list))
