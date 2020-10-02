@@ -265,7 +265,6 @@ def run_jobs(mode_list,path_dict,no_of_submits,peak_height_for_spectra):
 
 	#aditional control depending on the chosen mode and
 	if(any([mode in [4] for mode in mode_list]) and any([mode in [5] for mode in mode_list])==False     ):
-		print(any([mode not in [5] for mode in mode_list]))
 		while(len(glob.glob(path_dict["spectra_data"]+'/*.pl'))!=
 			len(glob.glob(path_dict["finished_input"]+'/*.sh'))
 			):
