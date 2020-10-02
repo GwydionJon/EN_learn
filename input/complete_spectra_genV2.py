@@ -283,19 +283,19 @@ def check_completion(path_dict,mode_list):
 			if(num_finished_inputs==num_finished_spectra and num_input_data==0):
 				print("exit 1")
 				return True
-			else return False
+			else: return False
 		if(mode_list==[3] or mode_list==[2,3]):
 			if(num_input_data==0):
 				return True
-			else return False
+			else: return False
 		if(mode_list==[3,4] or mode_list==[4]or mode_list==[2,3,4]):
 			if(num_finished_inputs==num_spectra_data):
 				return True
-			else return False
+			else: return False
 		if(mode_list==[5] or mode_list==[4,5] ):
 			if(num_finished_inputs==num_finished_spectra):
 				return True
-			else return False
+			else: return False
 
 
 
