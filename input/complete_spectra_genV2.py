@@ -259,6 +259,8 @@ def run_jobs_ordered(mode_list,path_dict,no_of_submits,peak_height_for_spectra):
 		
 		completed_all_tasks=check_completion(path_dict,mode_list)
 
+	print("Main Loop finished!\n",
+			"All Tasks were done")
 
 
 def check_completion(path_dict,mode_list):
