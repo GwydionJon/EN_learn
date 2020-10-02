@@ -30,7 +30,7 @@ def get_input_data():
 	
 	#first use test_mode, later this will be the normal mode
 	mode_string=input('Choose one of the following (#2,3,4,5 can be combined with \",\"): \n'+
-					'1: create input, send to server, manage output.\n'+
+					'1: create input, send to server, manage output, anaylse spectra.\n'+
 					'2: create input.\n'+
 					'3: send to server\n'+
 					'4: manage output\n'+
