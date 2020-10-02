@@ -203,7 +203,7 @@ def manage_output(path_dict,output_name_list):
 	for output_dir in output_name_list:
 		
 		#gets the run number from the dir name
-		run_file_name=glob.glob(output_dir+'/pyr4')[0]
+		run_file_name=glob.glob(output_dir+'/run*')[0]
 		print("run name:",run_file_name)
 		print("output_name:",output_dir )
 		run_parameters=(run_file_name.split("__")[1].split(".")[0])
