@@ -278,20 +278,24 @@ def check_completion(path_dict,mode_list):
 
 
 		if(any([mode in [1] for mode in mode_list]) or mode_list==[3,4,5] or mode_list==[2,3,4,5]):
+			print("case 1",num_finished_inputs, num_finished_spectra,num_input_data)
+
 			if(num_finished_inputs==num_finished_spectra and num_input_data==0):
+				print("exit 1")
 				return True
+			else return False
 		if(mode_list==[3] or mode_list==[2,3]):
 			if(num_input_data==0):
 				return True
-
+			else return False
 		if(mode_list==[3,4] or mode_list==[4]or mode_list==[2,3,4]):
 			if(num_finished_inputs==num_spectra_data):
 				return True
-
+			else return False
 		if(mode_list==[5] or mode_list==[4,5] ):
 			if(num_finished_inputs==num_finished_spectra):
 				return True
-
+			else return False
 
 
 
