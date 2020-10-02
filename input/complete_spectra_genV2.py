@@ -185,10 +185,10 @@ def commit_jobs(path_dict, no_of_submits):
 
 
 
-		return True
+		return True,no_of_submits
 	else:
 		print("No jobs remaining.")
-		return False
+		return False,0
 
 
 
@@ -224,7 +224,64 @@ def manage_output(path_dict,output_name_list):
 
 		print("\n \n")
 
-			
+def run_jobs_ordered(mode_list,path_dict,no_of_submits,peak_height_for_spectra):
+	
+	completed_all_tasks=False
+	while(completed_all_tasks==False):
+		
+		#beginn with submitting spectra 
+		if(start_next_batch==True and any([mode in [1,3] for mode in mode_list])):
+			jobs_available,actual_submits = commit_jobs(path_dict,no_of_submits)
+			start_next_batch=False
+			print("nap 60s")
+			time.sleep(60)	
+
+		#check how much output is available and compare that with the
+		#number of submitted files.
+		output_name_list=glob.glob(path_dict["output"]+'/*.output')
+		if(len(output_name_list)>=actual_submits):
+			start_next_batch=True #start new batch when all previos files are finished
+			if(any([mode in [1,4] for mode in mode_list])):
+				manage_output(path_dict,output_name_list)
+		#wait for more outputs			
+		else:
+			print("Not enough output yet:", len(output_name_list), "found but",
+				actual_submits, "needed.\n waiting for 30 seconds")
+			time.sleep(30)	
+
+		if(any([mode in [1,5] for mode in mode_list])):
+			spectra_analysis(path_dict,peak_height_for_spectra)
+		
+		completed_all_tasks=check_completion(path_dict,mode_list)
+
+
+
+def check_completion(path_dict,mode_list):
+		#get all the file counts:
+		num_input_data=len(glob.glob(path_dict["input_Data"]+'/*.sh'))
+		num_finished_inputs=len(glob.glob(path_dict["finished_input"]+'/*.sh'))
+		num_output=len(glob.glob(path_dict["output"]+'/*.output'))
+		num_finished_output=len(glob.glob(path_dict["finished_outputs"]+'/*.output'))
+		num_spectra_data=len(glob.glob(path_dict["spectra_data"]+'/*.pl'))
+		num_finished_spectra=len(glob.glob(path_dict["spectra_data_finished"]+'/*.pl'))
+
+
+		if(any([mode in [1,5] for mode in mode_list])):
+			if(num_finished_inputs==num_finished_spectra):
+				return True
+		if(mode==[3]):
+			if(num_input_data==0):
+				return True
+
+		if(any([mode in [4] for mode in mode_list])):
+			if(num_finished_inputs==num_spectra_data):
+				return True
+
+
+
+
+
+
 
 
 
@@ -288,7 +345,7 @@ def run_jobs(mode_list,path_dict,no_of_submits,peak_height_for_spectra):
 			time.sleep(45)	
 			
 			
-	print("All input files were converted into spectra. \nPreparing for spectra analysis")
+	print("All input files were converted into spectra.")
 
 
 
@@ -431,13 +488,15 @@ if(any([mode in [1,3,4,5] for mode in mode_list])):
 	shutil.copy2("./pyr4.inp",path_dict["input_Data"] )
 	shutil.copy2("./pyrmod4.op",path_dict["input_Data"] )
 
-	run_jobs(mode_list,path_dict,no_of_submits,peak_height_for_spectra)
+	#run_jobs(mode_list,path_dict,no_of_submits,peak_height_for_spectra)
+	run_jobs_ordered(mode_list,path_dict,no_of_submits,peak_height_for_spectra)
+
 	#maybe add this to the workflow
 
 #and one standalone spectra analysis 
 #this should be very quick if all spectras have already been analyzed
-if(any([mode in [1,5] for mode in mode_list])):
-	spectra_analysis(path_dict,peak_height_for_spectra)
+#if(any([mode in [1,5] for mode in mode_list])):
+#	spectra_analysis(path_dict,peak_height_for_spectra)
 
 
 if(any([mode in [666] for mode in mode_list])):
