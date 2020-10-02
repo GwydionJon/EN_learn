@@ -385,8 +385,10 @@ def spectra_analysis(path_dict,peak_height_for_spectra):
 			df_spectrum=df_spectrum.dropna(1) #remove all na entrys
 			df_spectrum.rename(columns={'#': 'Energy',' Energy':'g1','Unnamed: 2':'g2','Unnamed: 3':'g3'}, 
 					inplace=True) 
+			print("peak minimum:",df_spectrum.g1.max()*peak_height_for_spectra)
 			df_maxima=df_spectrum.iloc[find_peaks(df_spectrum.g1.values,height=df_spectrum.g1.max()*peak_height_for_spectra)[0]   ].dropna().drop(columns=['g2','g3'])
 			print(df_maxima)
+			print(df_maxima.empty)
 			main_max=df_maxima.nlargest(1,'g1')["Energy"].values[0]
 			#print("\n",main_max)
 			label_dict["main_maximum"]=main_max
