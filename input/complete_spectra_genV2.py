@@ -278,7 +278,7 @@ def check_completion(path_dict,mode_list):
 
 
 		if(any([mode in [1,5] for mode in mode_list])):
-			if(num_finished_inputs==num_finished_spectra):
+			if(num_finished_inputs==num_finished_spectra and num_input_data==0):
 				return True
 		if(mode==[3]):
 			if(num_input_data==0):
