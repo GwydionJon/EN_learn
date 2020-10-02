@@ -114,6 +114,8 @@ def get_input_data():
 ###
 #this will first create a dataFrame of all possible combinations for the given parameters and save it as a csv
 
+
+
 def create_submit_files(dict_param, path_dict):
 
 	if(os.path.exists("submit_new.sh")==False):
@@ -235,7 +237,7 @@ def run_jobs(mode_list,path_dict,no_of_submits,peak_height_for_spectra):
 			jobs_available = commit_jobs(path_dict,no_of_submits)
 			start_next_batch=False
 		#only wait if batches should be commited (mode 1,3)
-			print("nap")
+			print("nap 60s")
 			time.sleep(60)	
 		output_name_list=glob.glob(path_dict["output"]+'/*.output')
 		if(len(output_name_list)>=1 and any([mode in [1,4] for mode in mode_list])):
@@ -245,7 +247,10 @@ def run_jobs(mode_list,path_dict,no_of_submits,peak_height_for_spectra):
 				spectra_analysis(path_dict,peak_height_for_spectra)
 
 			start_next_batch=True
-
+		else:
+			print("No output found")
+			print("nap 30s")
+			time.sleep(30)
 
 	#aditional control depending on the chosen mode and
 	if(any([mode in [4] for mode in mode_list])):
