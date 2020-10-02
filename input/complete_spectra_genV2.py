@@ -240,14 +240,18 @@ def run_jobs_ordered(mode_list,path_dict,no_of_submits,peak_height_for_spectra):
 		#number of submitted files.
 		output_name_list=glob.glob(path_dict["output"]+'/*.output')
 		#exeption if mode 3 not included:
-		if(any([mode not in [3] for mode in mode_list])):
+		if(any([mode not in [1,3] for mode in mode_list])):
 			print("Warning: mode 3 not included. The program has no knowledge about how many submissions are expected")
 			actual_submits=len(output_name_list)
+		print("This many outputs are prensent:",len(output_name_list))
+		print("This many outputs are expected:",actual_submits)
 
 		if(len(output_name_list)>=actual_submits and len(output_name_list)>0):
 			start_next_batch=True #start new batch when all previos files are finished
 			if(any([mode in [1,4] for mode in mode_list])):
 				manage_output(path_dict,output_name_list)
+
+
 		#wait for more outputs		
 		elif(actual_submits==0):
 			print("Warning: No submissions expected and no output found, "+
@@ -415,6 +419,7 @@ def spectra_analysis(path_dict,peak_height_for_spectra):
 			shutil.move(data_file_str,path_dict["spectra_data_finished"] )
 
 		print(complete_df.head())
+		print(len(complete_df))
 		complete_df.to_csv(path_dict["working_directory"]+"/RENAME_THIS_AFTERWARDS_New_Peak_list.csv",index= False)
 		print("Saved CSV to "+path_dict["working_directory"]+"/RENAME_THIS_AFTERWARDS_New_Peak_list.csv")
 		#move finished spectra
