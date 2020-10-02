@@ -247,6 +247,13 @@ def run_jobs(mode_list,path_dict,no_of_submits,peak_height_for_spectra):
 				spectra_analysis(path_dict,peak_height_for_spectra)
 
 			start_next_batch=True
+		elif(len(glob.glob(path_dict["spectra_data"]+'/*.pl'))==
+			len(glob.glob(path_dict["finished_input"]+'/*.sh') )
+			 or
+			len(glob.glob(path_dict["spectra_data_finished"]+'/*.pl'))==
+			len(glob.glob(path_dict["finished_input"]+'/*.sh'))
+			)   :
+
 		else:
 			print("No output found")
 			print("nap 30s")
