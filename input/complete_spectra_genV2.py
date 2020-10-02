@@ -255,15 +255,16 @@ def run_jobs(mode_list,path_dict,no_of_submits,peak_height_for_spectra):
 			(len(glob.glob(path_dict["spectra_data_finished"]+'/*.pl'))==
 			len(glob.glob(path_dict["finished_input"]+'/*.sh')))
 			):
+			print("No of spectra = number of inputs -> finished")
 			jobs_available=False
 
 		else:
-			print("No output found")
+			print("No output found, but still waiting")
 			print("nap 30s")
 			time.sleep(30)
 
 	#aditional control depending on the chosen mode and
-	if(any([mode in [4] for mode in mode_list])):
+	if(any([mode in [4] for mode in mode_list]) and any([mode not in [5] for mode in mode_list])     ):
 		while(len(glob.glob(path_dict["spectra_data"]+'/*.pl'))!=
 			len(glob.glob(path_dict["finished_input"]+'/*.sh'))
 			):
@@ -287,15 +288,8 @@ def run_jobs(mode_list,path_dict,no_of_submits,peak_height_for_spectra):
 			time.sleep(45)	
 			
 			
-
-
-
-
-
-
 	print("All input files were converted into spectra. \nPreparing for spectra analysis")
-	#after all is completed the spectras can be analyzed
-	
+		
 
 
 def spectra_analysis(path_dict,peak_height_for_spectra):
