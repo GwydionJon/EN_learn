@@ -239,7 +239,12 @@ def run_jobs_ordered(mode_list,path_dict,no_of_submits,peak_height_for_spectra):
 		#check how much output is available and compare that with the
 		#number of submitted files.
 		output_name_list=glob.glob(path_dict["output"]+'/*.output')
-		if(len(output_name_list)>=actual_submits):
+		#exeption if mode 3 not included:
+		if(any([mode not in [3] for mode in mode_list])):
+			print("Warning: mode 3 not included. The program has no knowledge about how many submissions are expected")
+			actual_submits=len(output_name_list)
+
+		if(len(output_name_list)>=actual_submits and len(output_name_list)>0):
 			start_next_batch=True #start new batch when all previos files are finished
 			if(any([mode in [1,4] for mode in mode_list])):
 				manage_output(path_dict,output_name_list)
