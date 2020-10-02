@@ -248,7 +248,9 @@ def run_jobs_ordered(mode_list,path_dict,no_of_submits,peak_height_for_spectra):
 			start_next_batch=True #start new batch when all previos files are finished
 			if(any([mode in [1,4] for mode in mode_list])):
 				manage_output(path_dict,output_name_list)
-		#wait for more outputs			
+		#wait for more outputs		
+		elif(actual_submits==0):
+			print("Warning: No submissions expected, this program can not managa any output. Check manually if there are more Submits on the server and rerun the program afterwards")
 		else:
 			print("Not enough output yet:", len(output_name_list), "found but",
 				actual_submits, "needed.\n waiting for 30 seconds")
@@ -259,6 +261,8 @@ def run_jobs_ordered(mode_list,path_dict,no_of_submits,peak_height_for_spectra):
 		
 		completed_all_tasks=check_completion(path_dict,mode_list)
 
+	print("Main Loop finished!\n",
+			"All Tasks were done")
 
 
 def check_completion(path_dict,mode_list):
