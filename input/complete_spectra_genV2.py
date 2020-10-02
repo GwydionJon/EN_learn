@@ -388,7 +388,7 @@ def spectra_analysis(path_dict,peak_height_for_spectra):
 			#print(varialbes_names_value)
 			label_dict={}
 			for variable in varialbes_names_value:
-				label_dict[variable.split("%")[0]]=variable.split("%")[1]
+				label_dict[variable.split("%")[0]]=variable.split("%")[1].replace("_",".")
 				#this holds all names and values for the different label
 			#print(label_dict)
 
