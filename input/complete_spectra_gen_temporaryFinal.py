@@ -470,16 +470,16 @@ def setup_dir_structure(path_dict):
 	if(any([mode in [1,3,4] for mode in mode_list])):
 
 	#check if needed files for calculations are present in the same dir as this file. if not throw exepction
-		if(os.path.exists("pyr4.inp")==False):
+		if(os.path.exists(path_dict["pyr4_template"])==False):
 			sys.exit("this program can not function if pyr4.inp is missing")
-		if(os.path.exists("pyrmod4.op")==False):
+		if(os.path.exists(path_dict["pyrmod4_template"])==False):
 			sys.exit("this program can not function if pyrmod4.op is missing")
 
 		#copy pyr4.inp and pyrmod4.op into the input_Data and outputdir
-		shutil.copy2("./pyr4.inp",path_dict["input_Data"] )
-		shutil.copy2("./pyrmod4.op",path_dict["input_Data"] )	
-		shutil.copy2("./pyr4.inp",path_dict["output"] )
-		shutil.copy2("./pyrmod4.op",path_dict["output"] )	
+		shutil.copy2(path_dict["pyr4_template"],path_dict["input_Data"] )
+		shutil.copy2(path_dict["pyrmod4_template"],path_dict["input_Data"] )	
+		shutil.copy2(path_dict["pyr4_template"],path_dict["output"] )
+		shutil.copy2(path_dict["pyrmod4_template"],path_dict["output"] )	
 
 
 
