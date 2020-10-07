@@ -47,6 +47,13 @@ def get_input_data():
 	if(any([mode in [1,2] for mode in mode_list])):
 		number_of_files=1 #this is for later
 		#transforms input into list of strings 
+		default_submit= input("Do you want to use the dafault submit.sh, pyr4.inp, pyrmod4.op files? y/n\n")
+		if(default_submit=="y"):	
+			submit_template = ["submit.sh","pyr4.inp","pyrmod4.op"]
+		else:
+			default_submit = input("Write submit file name (eg.: submit_c.sh,pyr4c.inp,pyrmod4.op \n").split(",")
+
+
 		print("Chosse which parameters should be modified, choose names and seperate with \',\'. ")
 		parameter_string=input("all, k6a1, k6a2, k11, k12, k9a1, k9a2, delta, lambda\n") 
 		parameter_list=str(parameter_string).split(',')
@@ -109,7 +116,7 @@ def get_input_data():
 	else:
 		peak_height_for_spectra=1
 	
-	return mode_list, dict_param, working_directory, no_of_submits, peak_height_for_spectra
+	return mode_list, dict_param, working_directory, no_of_submits, peak_height_for_spectra, submit_template
 
 ###
 #this will first create a dataFrame of all possible combinations for the given parameters and save it as a csv
@@ -118,9 +125,9 @@ def get_input_data():
 
 def create_submit_files(dict_param, path_dict):
 
-	if(os.path.exists("submit_new.sh")==False):
+	if(os.path.exists(dict_param["submit_template"])==False):
 		sys.exit("this program can not function if submit.sh is missing")
-	inputfile = "submit_new.sh"
+	inputfile = dict_param["submit_template"]
 	
 	test=product(*dict_param.values())
 	df_combi = pd.DataFrame(test, columns=dict_param.keys())
@@ -497,12 +504,16 @@ print(dir_path)
 os.chdir(dir_path)
 
 #get basic setup parameters
-mode_list, dict_param, working_directory, no_of_submits,peak_height_for_spectra= get_input_data()
+mode_list, dict_param, working_directory, no_of_submits,peak_height_for_spectra,submit_template= get_input_data()
 
-
+ #["submit.sh","pyr4.inp","pyrmod4.op"]
 
 #setup dict for all paths
 path_dict={	"working_directory":working_directory,
+			"submit_template": submit_template[0],
+			"pyr4_template": submit_template[1],
+			"pyrmod4_template": submit_template[2],
+
 			"input_Data": working_directory+"/input_Data",
 			"finished_outputs": working_directory+"/finished_outputs",
 			"finished_input":working_directory+"/finished_input",
@@ -522,14 +533,14 @@ if(any([mode in [1,2] for mode in mode_list])):
 if(any([mode in [1,3,4,5] for mode in mode_list])):
 
 	#check if needed files for calculations are present in the same dir as this file. if not throw exepction
-	if(os.path.exists("pyr4.inp")==False):
+	if(os.path.exists(path_dict["pyr4_template"])==False):
 		sys.exit("this program can not function if pyr4.inp is missing")
-	if(os.path.exists("pyrmod4.op")==False):
+	if(os.path.exists(path_dict["pyrmod4_template"])==False):
 		sys.exit("this program can not function if pyrmod4.op is missing")
 
 	#copy pyr4.inp and pyrmod4.op into the input_Data dir
-	shutil.copy2("./pyr4.inp",path_dict["input_Data"] )
-	shutil.copy2("./pyrmod4.op",path_dict["input_Data"] )
+	shutil.copy2(path_dict["pyr4_template"],path_dict["input_Data"] )
+	shutil.copy2(path_dict["pyrmod4_template"],path_dict["input_Data"] )
 
 	#run_jobs(mode_list,path_dict,no_of_submits,peak_height_for_spectra)
 	run_jobs_ordered(mode_list,path_dict,no_of_submits,peak_height_for_spectra)
