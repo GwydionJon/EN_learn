@@ -51,7 +51,7 @@ def get_input_data():
 		submit_template = ["submit.sh","pyr4.inp","pyrmod4.op"]
 
 		if(default_submit=="n"):	
-			submit_template = input("Write submit file name (eg.: submit_c.sh,pyr4c.inp,pyrmod4.op \n").split(",")
+			submit_template = input("Write submit file name (eg.: submit_c.sh,pyr4c.inp,pyrmod4c.op \n").split(",")
 
 
 
