@@ -42,16 +42,17 @@ def get_input_data():
 	
 	#make dict
 	dict_param={}
-	
+	submit_template=[0,0,0]
 	#this must only be used if mode 1 or 2 are selected
 	if(any([mode in [1,2] for mode in mode_list])):
 		number_of_files=1 #this is for later
 		#transforms input into list of strings 
 		default_submit= input("Do you want to use the dafault submit.sh, pyr4.inp, pyrmod4.op files? y/n\n")
-		if(default_submit=="y"):	
-			submit_template = ["submit.sh","pyr4.inp","pyrmod4.op"]
-		else:
+		submit_template = ["submit.sh","pyr4.inp","pyrmod4.op"]
+
+		if(default_submit=="n"):	
 			submit_template = input("Write submit file name (eg.: submit_c.sh,pyr4c.inp,pyrmod4.op \n").split(",")
+
 
 
 		print("Chosse which parameters should be modified, choose names and seperate with \',\'. ")
