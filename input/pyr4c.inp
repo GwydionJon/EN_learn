@@ -15,10 +15,10 @@ end-operator-section
 
 SPF-BASIS-SECTION
 multi-set
-      v10a =    7, 7
-      v6a  =   12, 11
-      v1   =    6, 5
-      v9a  =    5, 4
+      v10a =    1, 7, 7
+      v6a  =    1, 12, 11
+      v1   =    1, 6, 5
+      v9a  =    1, 5, 4
 end-spf-basis-section
 
 PRIMITIVE-BASIS-SECTION
