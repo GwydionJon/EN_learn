@@ -51,7 +51,7 @@ def get_input_data():
 		if(default_submit=="y"):	
 			submit_template = ["submit.sh","pyr4.inp","pyrmod4.op"]
 		else:
-			default_submit = input("Write submit file name (eg.: submit_c.sh,pyr4c.inp,pyrmod4.op \n").split(",")
+			submit_template = input("Write submit file name (eg.: submit_c.sh,pyr4c.inp,pyrmod4.op \n").split(",")
 
 
 		print("Chosse which parameters should be modified, choose names and seperate with \',\'. ")
@@ -125,9 +125,9 @@ def get_input_data():
 
 def create_submit_files(dict_param, path_dict):
 
-	if(os.path.exists(dict_param["submit_template"])==False):
+	if(os.path.exists(path_dict["submit_template"])==False):
 		sys.exit("this program can not function if submit.sh is missing")
-	inputfile = dict_param["submit_template"]
+	inputfile = path_dict["submit_template"]
 	
 	test=product(*dict_param.values())
 	df_combi = pd.DataFrame(test, columns=dict_param.keys())
@@ -504,15 +504,15 @@ print(dir_path)
 os.chdir(dir_path)
 
 #get basic setup parameters
-mode_list, dict_param, working_directory, no_of_submits,peak_height_for_spectra,submit_template= get_input_data()
+mode_list, dict_param, working_directory, no_of_submits,peak_height_for_spectra,submit_templates= get_input_data()
 
  #["submit.sh","pyr4.inp","pyrmod4.op"]
 
 #setup dict for all paths
 path_dict={	"working_directory":working_directory,
-			"submit_template": submit_template[0],
-			"pyr4_template": submit_template[1],
-			"pyrmod4_template": submit_template[2],
+			"submit_template": submit_templates[0],
+			"pyr4_template": submit_templates[1],
+			"pyrmod4_template": submit_templates[2],
 
 			"input_Data": working_directory+"/input_Data",
 			"finished_outputs": working_directory+"/finished_outputs",
