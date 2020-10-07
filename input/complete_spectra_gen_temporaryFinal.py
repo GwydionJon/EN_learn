@@ -117,6 +117,7 @@ def get_input_data():
 	else:
 		peak_height_for_spectra=1
 	
+	print("Finished setup\n")
 	return mode_list, dict_param, working_directory, no_of_submits, peak_height_for_spectra, submit_template
 
 ###
@@ -126,6 +127,7 @@ def get_input_data():
 
 def create_submit_files(dict_param, path_dict):
 
+	print("Begin creation of submit files")
 	if(os.path.exists(path_dict["submit_template"])==False):
 		sys.exit("this program can not function if submit.sh is missing")
 	inputfile = path_dict["submit_template"]
@@ -160,6 +162,7 @@ def create_submit_files(dict_param, path_dict):
 								line = old_file.read()
 								new_file.write(line.replace("runxxx", run_str).replace("xyz", parameter_str).replace("whatever",output_name)  )
 								#new_file.write(line.replace("runxxx", run_str).replace("xyz", parameter_str))#.replace("whatever",output_dir)   )
+		print("Finished creation of submit files")
 
 
 

@@ -1358,3 +1358,5 @@ machine_learning/delta_100_model_main_max/second Try/trial_f63f61632431cefffaf9d
 machine_learning/delta_100_model_main_max/second Try/trial_f8a61f3b5c905f616118bf263c47d5de/checkpoints/epoch_0/checkpoint
 machine_learning/delta_100_model_main_max/second Try/trial_f93acadf6236ac3f8da2e47affe40c66/checkpoints/epoch_0/checkpoint
 machine_learning/delta_100_model_main_max/second Try/trial_fe5fb9810c0066cd6bb8002719eaff74/checkpoints/epoch_0/checkpoint
+input/test/output/pyr4c.inp
+input/test/input_Data/pyr4c.inp
