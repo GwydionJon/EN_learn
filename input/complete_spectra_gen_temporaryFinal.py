@@ -156,7 +156,7 @@ def create_submit_files(dict_param, path_dict):
 			parameter_str="-mnd -D run" +str(i)
 			for j,nr in enumerate(row):
 				outname=outname+"__"+df_combi.columns[j]+"_"+str(nr)
-				parameter_str=parameter_str + " -p " +df_combi.columns[j]+" "+str(nr)
+				parameter_str=parameter_str + " -p " +df_combi.columns[j]+" "+str(nr/27.211)  #divide by 27.211 to convert from ev to au
 				output_name=output_name+"++"+df_combi.columns[j]+"%"+str(nr).replace(".","_")			
 			outname=outname+".sh"
 			
