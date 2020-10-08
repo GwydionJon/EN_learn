@@ -137,9 +137,9 @@ def create_submit_files(dict_param, path_dict):
 		sys.exit("this program can not function if submit.sh is missing")
 	inputfile = path_dict["submit_template"]
 	
-	test=product(*dict_param.values())
-	df_combi = pd.DataFrame(test, columns=dict_param.keys())
-	
+	all_combination_values=product(*dict_param.values())
+	df_combi = pd.DataFrame(all_combination_values, columns=dict_param.keys())
+	df_combi=df_combi.round(4)
 	if(len(glob.glob(path_dict["working_directory"]+"/*.csv"  ))!=0):
 		print("There is already a csv file with parameters present! No new data will be generated!")
 		print("Instead the previous submissions will be continued if mode 1 or 3 were chosen.")
