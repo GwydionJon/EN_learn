@@ -96,6 +96,14 @@ def get_input_data():
 			working_directory=input("Enter working directory\n")
 		else:
 			working_directory="test"
+
+		default_submit= input("Do you want to use the dafault submit.sh, pyr4.inp, pyrmod4.op files? y/n\n")
+		submit_template = ["submit.sh","pyr4.inp","pyrmod4.op"]
+
+		if(default_submit=="n"):	
+			submit_template = input("Write submit file name (eg.: submit_c.sh,pyr4c.inp,pyrmod4c.op \n").split(",")
+
+
 	else:
 		working_directory="test"
 	if(any([mode in [1,3] for mode in mode_list])):
