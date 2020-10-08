@@ -47,12 +47,7 @@ def get_input_data():
 	if(any([mode in [1,2] for mode in mode_list])):
 		number_of_files=1 #this is for later
 		#transforms input into list of strings 
-		default_submit= input("Do you want to use the dafault submit.sh, pyr4.inp, pyrmod4.op files? y/n\n")
-		submit_template = ["submit.sh","pyr4.inp","pyrmod4.op"]
-
-		if(default_submit=="n"):	
-			submit_template = input("Write submit file name (eg.: submit_c.sh,pyr4c.inp,pyrmod4c.op \n").split(",")
-
+		
 
 
 		print("Chosse which parameters should be modified, choose names and seperate with \',\'. ")
@@ -106,6 +101,14 @@ def get_input_data():
 			working_directory="test"
 	else:
 		working_directory="test"
+
+		default_submit= input("Do you want to use the dafault submit.sh, pyr4.inp, pyrmod4.op files? y/n\n")
+		submit_template = ["submit.sh","pyr4.inp","pyrmod4.op"]
+
+		if(default_submit=="n"):	
+			submit_template = input("Write submit file name (eg.: submit_c.sh,pyr4c.inp,pyrmod4c.op \n").split(",")
+
+
 	if(any([mode in [1,3] for mode in mode_list])):
 		no_of_submits=int(input("Enter number of submits in each run:\n"))
 	else:
@@ -470,7 +473,7 @@ def setup_dir_structure(path_dict):
 	# if(os.path.exists(path_dict["spectra_data"])==False):
 	# 	os.makedirs(path_dict["spectra_data"])
 
-	if(any([mode in [1,3,4] for mode in mode_list])):
+	if(any([mode in [1,3] for mode in mode_list])):
 
 	#check if needed files for calculations are present in the same dir as this file. if not throw exepction
 		if(os.path.exists(path_dict["pyr4_template"])==False):
