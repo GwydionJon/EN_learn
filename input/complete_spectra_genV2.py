@@ -97,6 +97,8 @@ def get_input_data():
 		else:
 			working_directory="test"
 
+
+		print("test")
 		default_submit= input("Do you want to use the dafault submit.sh, pyr4.inp, pyrmod4.op files? y/n\n")
 		submit_template = ["submit.sh","pyr4.inp","pyrmod4.op"]
 
