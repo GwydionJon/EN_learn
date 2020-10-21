@@ -136,7 +136,7 @@ tuner = kt.RandomSearch(
 
     executions_per_trial=EXECUTIONS_PER_TRIAL,
 
-    directory='overlap_from_spectrum_hitchcock',
+    directory='tuner_overlap_from_spectrum_hitchcock',
     #overwrite = True,
     project_name='first Try',
 
@@ -146,5 +146,8 @@ tuner = kt.RandomSearch(
 
 tuner.search(x_train, y_train, epochs = 1, validation_data = (x_test, y_test))
 best_model = tuner.get_best_models()[0]
-best_model.build()
+
+epochs_run, hist = train_model(best_model,x_train, y_train, 50, 
+                          all_label_list, 100)
+
 best_model.save("saved_Models/first Try")
