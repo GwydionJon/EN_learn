@@ -12,8 +12,8 @@ myinp="ml_overlap_from_spectrum_tuner.py"
 
 myop="all_param_4_values_with_overlap.csv"
 # we will make use of altering parameters via the command line
-run="ml_overlap_from_spectrum_tuner"
-outname='tuner_out2'
+run="-mnd -D ml_overlap_from_spectrum_tuner"
+outname='tuner_out4'
 source ~/.bashrc
 myexec="/home/tcstud25/anaconda3/bin/python"
 # you may want to have some info file created when the job starts
