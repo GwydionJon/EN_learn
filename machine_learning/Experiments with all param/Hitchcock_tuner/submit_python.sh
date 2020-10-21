@@ -3,8 +3,8 @@
 #SBATCH --job-name="ml_overlap_from_spectrum_tuner"
 #SBATCH --nodes=1
 #SBATCH --ntasks=1 
-#SBATCH --cpus-per-task=1
-#SBATCH --mem=2G
+#SBATCH --cpus-per-task=24
+#SBATCH --mem=32G
 #SBATCH --output="j%j.%N.out"
 ####SBATCH --partition=all
 
@@ -36,8 +36,8 @@ mkdir -p $RUN_PATH
 cp -r $START_DIR/"$myinp" $RUN_PATH
 cp -r $START_DIR/"$myop" $RUN_PATH
 cd $RUN_PATH
-echo "Run parameters are : $myexec $run $myinp.inp"
-srun $myexec $run $myinp.inp 
+echo "Run parameters are : $myexec $run $myinp"
+srun $myexec $run $myinp 
 
 # If you do use MPI, use 'mpirun' to start the job.
 # Check the various mpirun options for performance 
