@@ -50,7 +50,7 @@ def create_model_optimizer(hp):
 
         
     hp_lr=hp.Choice('learning_rate', values=[1e-2, 1e-3, 1e-4])
-    hp_momentum=hp.Choice('momentum', values=[1e-2, 1e-1, 2e-1,5e-1])
+    hp_momentum=hp.Choice('momentum', values=[1e-2, 1e-1, 2e-1,5e-1,7e-1,8e-1])
 
     model.add(tf.keras.layers.Dense(units=15,name='Output', activation = 'relu'))                             
     model.compile(optimizer=tf.keras.optimizers.SGD(lr=hp_lr,momentum=hp_momentum),                                       
@@ -144,6 +144,6 @@ tuner = kt.RandomSearch(
 
 )
 
-tuner.search(x_train, y_train, epochs = 2, validation_data = (x_test, y_test))
+tuner.search(x_train, y_train, epochs = 70, validation_data = (x_test, y_test))
 best_model = tuner.get_best_models()[0]
 best_model.save("saved_Models/first Try")
