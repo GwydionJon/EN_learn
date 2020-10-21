@@ -146,4 +146,5 @@ tuner = kt.RandomSearch(
 
 tuner.search(x_train, y_train, epochs = 2, validation_data = (x_test, y_test))
 best_model = tuner.get_best_models()[0]
+best_model.build()
 best_model.save("saved_Models/first Try")
