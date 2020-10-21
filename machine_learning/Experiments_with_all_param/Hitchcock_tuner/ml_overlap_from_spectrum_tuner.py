@@ -122,9 +122,9 @@ concat_feature=np.concatenate((all_maxima_array_padded,intensity_array_padded),a
 
 x_train, x_test,y_train,y_test = train_test_split( concat_feature, concat_label  ,test_size=0.20, random_state=42)
 
-MAX_TRIALS = 2
+MAX_TRIALS = 50
 
-EXECUTIONS_PER_TRIAL = 1
+EXECUTIONS_PER_TRIAL = 5
 
 tuner = kt.RandomSearch(
 
@@ -144,12 +144,12 @@ tuner = kt.RandomSearch(
 
 )
 
-tuner.search(x_train, y_train, epochs = 1, validation_data = (x_test, y_test))
+tuner.search(x_train, y_train, epochs = 70, validation_data = (x_test, y_test))
 best_model = tuner.get_best_models()[0]
 
 all_label_list=['k6a 0',"k6a 1","k6a 2","k6a 3","k6a 4","k1 0","k1 1","k1 2","k1 3","k1 4","k9a 0","k9a 1","k9a 2","k9a 3","k9a 4"]
 
-epochs_run, hist = train_model(best_model,x_train, y_train, 2, 
+epochs_run, hist = train_model(best_model,x_train, y_train, 20, 
                           all_label_list, 100)
 
 best_model.save("saved_Models/first Try")
