@@ -84,7 +84,7 @@ def test_model(model,x_data, y_data ,label_name):
 dir_path = os.path.dirname(os.path.realpath(__file__))
 all_labels_features=["delta","lambda","all_maxima","Intensity","overlap_s0_s2_k6a","overlap_s0_s2_k1","overlap_s0_s2_k9a"]
 
-csv_filename=glob.glob(dir_path+"\*.csv")[0]
+csv_filename=glob.glob(dir_path+"/*.csv")[0]
 
 
 
