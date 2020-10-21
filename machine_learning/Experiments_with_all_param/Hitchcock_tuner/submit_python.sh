@@ -12,7 +12,6 @@ myinp="ml_overlap_from_spectrum_tuner.py"
 
 myop="all_param_4_values_with_overlap.csv"
 # we will make use of altering parameters via the command line
-run="-mnd -D ml_overlap_from_spectrum_tuner"
 outname='tuner_out4'
 source ~/.bashrc
 myexec="/home/tcstud25/anaconda3/bin/python"
@@ -36,8 +35,8 @@ mkdir -p $RUN_PATH
 cp -r $START_DIR/"$myinp" $RUN_PATH
 cp -r $START_DIR/"$myop" $RUN_PATH
 cd $RUN_PATH
-echo "Run parameters are : $myexec $run $myinp"
-srun $myexec $run $myinp 
+echo "Run parameters are : $myexec $myinp"
+srun $myexec $myinp 
 
 # If you do use MPI, use 'mpirun' to start the job.
 # Check the various mpirun options for performance 
