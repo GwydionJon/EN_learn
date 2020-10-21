@@ -147,7 +147,9 @@ tuner = kt.RandomSearch(
 tuner.search(x_train, y_train, epochs = 1, validation_data = (x_test, y_test))
 best_model = tuner.get_best_models()[0]
 
-epochs_run, hist = train_model(best_model,x_train, y_train, 50, 
+all_label_list=['k6a 0',"k6a 1","k6a 2","k6a 3","k6a 4","k1 0","k1 1","k1 2","k1 3","k1 4","k9a 0","k9a 1","k9a 2","k9a 3","k9a 4"]
+
+epochs_run, hist = train_model(best_model,x_train, y_train, 2, 
                           all_label_list, 100)
 
 best_model.save("saved_Models/first Try")
