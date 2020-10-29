@@ -343,7 +343,7 @@ def compare_submits_to_otput(path_dict):
 	list_missing_submit_files=[]
 	for row in df_missing.values:
 		list_missing_submit_files.append(
-			"submit__k6a1_"+str(row[0])+
+			"/submit__k6a1_"+str(row[0])+
 			"__k6a2_"+str(row[1])+
 			"__k11_"+str(row[2])+
 			"__k12_"+str(row[4])+
