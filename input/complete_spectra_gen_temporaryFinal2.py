@@ -322,16 +322,41 @@ def check_completion(path_dict,mode_list):
 				return True
 			else: return False
 
-
+def get_different_rows(source_df, new_df):
+    """Returns just the rows from the new dataframe that differ from the source dataframe"""
+    merged_df = source_df.merge(new_df, indicator=True, how='outer')
+    changed_rows_df = merged_df[merged_df['_merge'] == 'right_only']
+    return changed_rows_df.drop('_merge', axis=1)
 
 def compare_submits_to_otput(path_dict):
 	current_path=os.getcwd()
 	print("current",current_path)
+	print(type(path_dict["working_directory"]))
+	combination_csv=glob.glob( path_dict["working_directory"]+'/*combinations.csv')[0]
+	output_csv=glob.glob( path_dict["working_directory"]+'/*list.csv')[0]
 
-	csv_files=glob.glob( path_dict[working_directory]+'/*')[0]
-	print(csv_files)
+	df_combinations=pd.read_csv(combination_csv)[["k6a1","k6a2","k11","k12","k9a1","k9a2","delta", "lambda"]]
+	df_output=pd.read_csv(output_csv)[["k6a1","k6a2","k11","k12","k9a1","k9a2","delta", "lambda"]]
 
+	df_missing = get_different_rows(df_output,df_combinations)
+	print(df_missing.head())
+	list_missing_submit_files=[]
+	for row in df_missing.values:
+		list_missing_submit_files.append(
+			"submit__k6a1_"+str(row[0])+
+			"__k6a2_"+str(row[1])+
+			"__k11_"+str(row[2])+
+			"__k12_"+str(row[4])+
+			"__k9a1_"+str(row[3])+
+			"__k9a2_"+str(row[4])+
+			"__delta_"+str(row[5])+
+			"__lambda_"+str(row[6])+".sh"
+		)
+	print(list_missing_submit_files)
+#move all missing files back to input_Data
 
+	for file_str in list_missing_submit_files:
+		shutil.move(path_dict["finished_input"]+file_str, path_dict["input_Data"]     )
 
 def run_jobs(mode_list,path_dict,no_of_submits,peak_height_for_spectra):
 	jobs_available=True
