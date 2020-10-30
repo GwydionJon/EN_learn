@@ -23,36 +23,91 @@ from scipy.signal import find_peaks
 
 def load_prebuild_structure():
 	list_main_dir=[]
-	list_operator_files=[]
 	for main_dir in os.listdir('.'):
 		if(os.path.isdir(main_dir)):
 			list_needed_dir=["finished_input","finished_outputs","input_Data",
 				"output","spectra_data","spectra_data_finished"]
 			if(set(list_needed_dir).issubset(os.listdir(main_dir))  ):
-				#print(main_dir, "contains all requiered subdir")
-				mol_inp=glob.glob(main_dir+"/output/*.inp")
-				mol_op=glob.glob(main_dir+"/output/*.op")
-				mol_submit_sh=glob.glob(main_dir+"/output/*.sh")
-				
-				if(len(mol_inp)!=1 or len(mol_op)!=1 or len(mol_submit_sh)!=1):
-					print("Not the correct number of .inp, .op and .sh files found. Number of files should be 1 bis is",
-					len(mol_inp), len(mol_op), len(mol_submit_sh), "respectivly")
+				list_main_dir.append(main_dir)
 
-				else:
-					mol_inp=mol_inp[0].split("/")[-1]
-					mol_op=mol_op[0].split("/")[-1]
-					mol_submit_sh=mol_submit_sh[0].split("/")[-1]
+
+	choice_use_existing=input("Do you want to use one of the "+ 
+	str(len(list_main_dir))+
+	" existing directories? y/n \n" )
+	if(choice_use_existing=="y"):
+		for i in range(len(list_main_dir)):
+			print("Use ",i, "to choose ", list_main_dir[i])
 				
-					list_operator_files.append([mol_inp,mol_op,mol_submit_sh])
-					list_main_dir.append(main_dir)
-					print("Valid subdir and operator files found")
-					print("Main dir list:", list_main_dir)
-					print("operator files:", list_operator_files)
-	return list_main_dir, list_operator_files
+		choice_nr=int(input("Please enter the desired number.\n"))
+		working_directory=list_main_dir[choice_nr]
+
+	else: #choice use existing =!y
+		bool_directory=input("Do you wish to choose a specific directory? (if not \"test\" will be used) y/n\n")
+
+		if(bool_directory=='y'):
+			working_directory=input("Enter working directory\n")
+		else:
+			working_directory="test"
+	
+	return working_directory
+	
+			
 
 			
 
+def find_operator_files(main_dir=0):
+#operator list= [.inp,.op,.sh]
+	
+	#get .inp  and .op from preexisting dir, if available
 
+	mol_inp=glob.glob(main_dir+"/output/*.inp")
+	mol_op=glob.glob(main_dir+"/output/*.op")
+	
+	if(len(mol_inp)!=1 or len(mol_op)!=1 ):
+		print("Not the correct number of .inp, .op and .sh files found. Number of files should be 1 bis is",
+		len(mol_inp), len(mol_op), "respectivly")
+		mol_inp=0
+		mol_op=0
+		print("Enter desired .inp and .op files when asked.")
+	else:
+		file_inp=mol_inp[0].split("/")[-1]
+		print("Found .inp file:", file_inp)
+		file_op=mol_op[0].split("/")[-1]
+		print("Found .op file:", file_op)
+			
+	if(mol_inp==0 or mol_op==0): # if no dir is given, search for available .inp and .op files
+		mol_inp=glob.glob("*.inp")
+		mol_op=glob.glob("*.op")
+		if(len(mol_inp)>0):
+			print("Choose one of the ", len(mol_inp), " .inp files.")
+			for i,inp in enumerate(mol_inp):
+				print(i, "for ", inp)
+
+			choice_inp =int(input("Please enter the desired number.\n"))
+			file_inp=mol_inp[choice_inp]
+		else:
+			exit("No .inp files found")
+		if(len(mol_op)>0):
+			print("Choose one of the ", len(mol_op), " .op files.")
+			for i,op in enumerate(mol_op):
+				print(i, "for ", op)
+			choice_op =int(input("Please enter the desired number.\n"))
+			file_op=mol_op[choice_op]
+		else:
+			exit("No .op files found")
+
+	#search for avaiable .sh files to use as template
+	input_sh=glob.glob("*.sh")
+	if(len(input_sh)>0):
+		print("Choose one of the ", len(input_sh), " .sh files.")
+		for i,sh in enumerate(input_sh):
+			print(i, "for ", sh)
+		choice_sh =int(input("Please enter the desired number.\n"))
+		file_sh=input_sh[choice_sh]
+	else:
+		exit("No .sh files found")
+
+	return file_inp,file_op,file_sh
 
 
 
@@ -133,37 +188,11 @@ def get_input_data():
 
 	#setup directory and operator files or import from existing directory
 	if(any([mode in [1,2,3,4,5,6] for mode in mode_list])):
-		list_main_dir_found, list_operator_files_found=load_prebuild_structure()
-		if(len(list_main_dir_found)>=1):
-			choice_use_existing=input("Do you want to use one of the "+ str(len(list_main_dir_found))+
-			" existing directories? y/n \n" )
-			if(choice_use_existing=="y"):
-				for i in range(len(list_main_dir_found)):
-					print("Use ",i, "to accsess ", list_main_dir_found[i], 
-						"and the corresponding operator files ",list_operator_files_found[i])
-				choice_nr=int(input("Please enter the desired number.\n"))
-				working_directory=list_main_dir_found[choice_nr]
-				submit_template=list_operator_files_found[choice_nr]
-			
+		working_directory =load_prebuild_structure()
+
+		submit_template=find_operator_files(working_directory)
 
 
-
-			else: #choice use existing =!y
-				bool_directory=input("Do you wish to choose a specific directory? (if not \"test\" will be used) y/n\n")
-
-				if(bool_directory=='y'):
-					working_directory=input("Enter working directory\n")
-				else:
-					working_directory="test"
-
-				default_submit= input("Do you want to use the dafault submit.sh, pyr4.inp, pyrmod4.op files? y/n\n")
-				submit_template = ["submit.sh","pyr4.inp","pyrmod4.op"]
-
-				if(default_submit=="n"):	
-					submit_template = input("Write submit file name (eg.: submit_c.sh,pyr4c.inp,pyrmod4c.op \n").split(",")
-
-	else:
-		working_directory="test"
 
 		
 
