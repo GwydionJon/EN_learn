@@ -309,26 +309,27 @@ def manage_output(path_dict,output_name_list):
 	for output_dir in output_name_list:
 		
 		#gets the run number from the dir name
-		run_file_name=glob.glob(output_dir+'/run*')[0]
-		print("run name:",run_file_name)
-		print("output_name:",output_dir )
-		run_parameters=(run_file_name.split("__")[1].split(".")[0])
+		if(len(glob.glob(output_dir+'/run*'))>0):
+			run_file_name=glob.glob(output_dir+'/run*')[0]
+			print("run name:",run_file_name)
+			print("output_name:",output_dir )
+			run_parameters=(run_file_name.split("__")[1].split(".")[0])
 
-		print("Run file name: "+ run_file_name)
-		print("Run parameter: ",run_parameters)
-		
-		#change dir for autospec
-		os.chdir(run_file_name)
-		os.system("autospec85 -e -0.2258 eV  -1.0 1.0 eV 30 1")
-					
-		#return to previous dir
-		os.chdir(current_path)
-		#copys the spectrum into the spectra_data dir and changes its name according to the run number
-		shutil.copy(run_file_name +"/spectrum.pl",path_dict["spectra_data"]+"/"+run_parameters+".pl" )
-		#moves the complete output dir into the finished 
-		shutil.move(output_dir,path_dict["finished_outputs"]+"/submits_"+run_parameters+".output" )
+			print("Run file name: "+ run_file_name)
+			print("Run parameter: ",run_parameters)
+			
+			#change dir for autospec
+			os.chdir(run_file_name)
+			os.system("autospec85 -e -0.2258 eV  -1.0 1.0 eV 30 1")
+						
+			#return to previous dir
+			os.chdir(current_path)
+			#copys the spectrum into the spectra_data dir and changes its name according to the run number
+			shutil.copy(run_file_name +"/spectrum.pl",path_dict["spectra_data"]+"/"+run_parameters+".pl" )
+			#moves the complete output dir into the finished 
+			shutil.move(output_dir,path_dict["finished_outputs"]+"/submits_"+run_parameters+".output" )
 
-		print("\n \n")
+			print("\n \n")
 
 def run_jobs_ordered(mode_list,path_dict,no_of_submits,peak_height_for_spectra):
 	start_next_batch=True
