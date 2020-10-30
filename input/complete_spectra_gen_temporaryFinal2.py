@@ -21,8 +21,44 @@ from scipy.signal import find_peaks
 #which range 		(if mode =1,2)
 #which directory
 
+def load_prebuild_structure():
+	list_main_dir=[]
+	list_operator_files=[]
+	for main_dir in os.listdir('.'):
+		if(os.path.isdir(main_dir)):
+			list_needed_dir=["finished_input","finished_outputs","input_Data",
+				"output","spectra_data","spectra_data_finished"]
+			if(set(list_needed_dir).issubset(os.listdir(main_dir))  ):
+				#print(main_dir, "contains all requiered subdir")
+				mol_inp=glob.glob(main_dir+"/output/*.inp")
+				mol_op=glob.glob(main_dir+"/output/*.op")
+				mol_submit_sh=glob.glob(main_dir+"/output/*.sh")
+				
+				if(len(mol_inp)!=1 or len(mol_op)!=1 or len(mol_submit_sh)!=1):
+					print("Not the correct number of .inp, .op and .sh files found. Number of files should be 1 bis is",
+					len(mol_inp), len(mol_op), len(mol_submit_sh), "respectivly")
+
+				else:
+					mol_inp=mol_inp[0].split("/")[-1]
+					mol_op=mol_op[0].split("/")[-1]
+					mol_submit_sh=mol_submit_sh[0].split("/")[-1]
+				
+					list_operator_files.append([mol_inp,mol_op,mol_submit_sh])
+					list_main_dir.append(main_dir)
+					print("Valid subdir and operator files found")
+					print("Main dir list:", list_main_dir)
+					print("operator files:", list_operator_files)
+
+
+			
+
+
+
+
+
+
 def get_input_data():
-	
+	load_prebuild_structure()
 	#beginn input for the program
 	print("This program is designed to initilize submission files, submit those to to MCDTH and manage the ouput.\n"+
 		"pyrmod4.op, pyr4.inp and submit.sh must be in the same directory!\n"+
