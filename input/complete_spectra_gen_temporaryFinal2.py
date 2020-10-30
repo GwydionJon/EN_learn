@@ -429,22 +429,18 @@ def compare_submits_to_otput(path_dict):
 	print(df_missing.head())
 	list_missing_submit_files=[]
 	for row in df_missing.values:
-		list_missing_submit_files.append(
-			"/submit__k6a1_"+str(row[0])+
-			"__k6a2_"+str(row[1])+
-			"__k11_"+str(row[2])+
-			"__k12_"+str(row[4])+
-			"__k9a1_"+str(row[3])+
-			"__k9a2_"+str(row[4])+
-			"__delta_"+str(row[5])+
-			"__lambda_"+str(row[6])+".sh"
-		)
-	#print(list_missing_submit_files)
+		list_missing_submit_files.append("/submit")
+		for i, comlumname in enumerate(column_names):
+			list_missing_submit_files[-1]=str(list_missing_submit_files[-1] +
+				"__"+comlumname+"_"+str(row[i]))
+			
+		list_missing_submit_files[-1]=str(list_missing_submit_files[-1] + ".sh")
+	print(list_missing_submit_files)
 
 	#move all missing files back to input_Data
 
-	#for file_str in list_missing_submit_files:
-	#	shutil.move(path_dict["finished_input"]+file_str, path_dict["input_Data"]     )
+	for file_str in list_missing_submit_files:
+		shutil.move(path_dict["finished_input"]+file_str, path_dict["input_Data"]     )
 
 def run_jobs(mode_list,path_dict,no_of_submits,peak_height_for_spectra):
 	jobs_available=True
