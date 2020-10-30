@@ -637,9 +637,9 @@ mode_list, dict_param, working_directory, no_of_submits,peak_height_for_spectra,
 
 #setup dict for all paths
 path_dict={	"working_directory":working_directory,
-			"submit_template": submit_templates[0],
-			"pyr4_template": submit_templates[1],
-			"pyrmod4_template": submit_templates[2],
+			"pyr4_template": submit_templates[0],
+			"pyrmod4_template": submit_templates[1],
+			"submit_template": submit_templates[2],
 
 			"input_Data": working_directory+"/input_Data",
 			"finished_outputs": working_directory+"/finished_outputs",
