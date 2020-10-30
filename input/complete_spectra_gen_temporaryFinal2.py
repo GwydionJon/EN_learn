@@ -48,7 +48,7 @@ def load_prebuild_structure():
 					print("Valid subdir and operator files found")
 					print("Main dir list:", list_main_dir)
 					print("operator files:", list_operator_files)
-
+	return list_main_dir, list_operator_files
 
 			
 
@@ -58,7 +58,7 @@ def load_prebuild_structure():
 
 
 def get_input_data():
-	load_prebuild_structure()
+	
 	#beginn input for the program
 	print("This program is designed to initilize submission files, submit those to to MCDTH and manage the ouput.\n"+
 		"pyrmod4.op, pyr4.inp and submit.sh must be in the same directory!\n"+
@@ -129,19 +129,38 @@ def get_input_data():
 			sys.exit()
 		print(number_of_files, " Files will be created, if that is not correct please terminate the program now!")
 	#print(dict_param)
+
+
+	#setup directory and operator files or import from existing directory
 	if(any([mode in [1,2,3,4,5,6] for mode in mode_list])):
-		bool_directory=input("Do you wish to choose a specific directory? (if not \"test\" will be used) y/n\n")
+		list_main_dir_found, list_operator_files_found=load_prebuild_structure()
+		if(len(list_main_dir_found)>=1):
+			choice_use_existing=input("Do you want to use one of the "+ str(len(list_main_dir_found))+
+			" existing directories? y/n \n" )
+			if(choice_use_existing=="y"):
+				for i in range(len(list_main_dir_found)):
+					print("Use ",i, "to accsess ", list_main_dir_found[i], 
+						"and the corresponding operator files ",list_operator_files_found[i])
+				choice_nr=int(input("Please enter the desired number.\n"))
+				working_directory=list_main_dir_found[choice_nr]
+				submit_template=list_operator_files_found[choice_nr]
+			
 
-		if(bool_directory=='y'):
-			working_directory=input("Enter working directory\n")
-		else:
-			working_directory="test"
 
-		default_submit= input("Do you want to use the dafault submit.sh, pyr4.inp, pyrmod4.op files? y/n\n")
-		submit_template = ["submit.sh","pyr4.inp","pyrmod4.op"]
 
-		if(default_submit=="n"):	
-			submit_template = input("Write submit file name (eg.: submit_c.sh,pyr4c.inp,pyrmod4c.op \n").split(",")
+			else: #choice use existing =!y
+				bool_directory=input("Do you wish to choose a specific directory? (if not \"test\" will be used) y/n\n")
+
+				if(bool_directory=='y'):
+					working_directory=input("Enter working directory\n")
+				else:
+					working_directory="test"
+
+				default_submit= input("Do you want to use the dafault submit.sh, pyr4.inp, pyrmod4.op files? y/n\n")
+				submit_template = ["submit.sh","pyr4.inp","pyrmod4.op"]
+
+				if(default_submit=="n"):	
+					submit_template = input("Write submit file name (eg.: submit_c.sh,pyr4c.inp,pyrmod4c.op \n").split(",")
 
 	else:
 		working_directory="test"
