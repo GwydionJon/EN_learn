@@ -330,7 +330,8 @@ def manage_output(path_dict,output_name_list):
 			shutil.move(output_dir,path_dict["finished_outputs"]+"/submits_"+run_parameters+".output" )
 
 			print("\n \n")
-
+		else:
+			print("len von output dir ==0")
 def run_jobs_ordered(mode_list,path_dict,no_of_submits,peak_height_for_spectra):
 	start_next_batch=True
 	completed_all_tasks=False
