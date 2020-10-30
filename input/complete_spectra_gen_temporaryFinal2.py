@@ -286,6 +286,7 @@ def commit_jobs(path_dict, no_of_submits):
 		print("submitting file")
 		os.chdir(current_path)
 		for i in range(no_of_submits):
+			print(all_input_data_long_path[i])
 			shutil.move(all_input_data_long_path[i],path_dict["finished_input"] )
 
 
