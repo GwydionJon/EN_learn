@@ -419,8 +419,11 @@ def compare_submits_to_otput(path_dict):
 	combination_csv=glob.glob( path_dict["working_directory"]+'/*combinations.csv')[0]
 	output_csv=glob.glob( path_dict["working_directory"]+'/*list.csv')[0]
 
-	df_combinations=pd.read_csv(combination_csv)[["k6a1","k6a2","k11","k12","k9a1","k9a2","delta", "lambda"]]
-	df_output=pd.read_csv(output_csv)[["k6a1","k6a2","k11","k12","k9a1","k9a2","delta", "lambda"]]
+	#df_combinations=pd.read_csv(combination_csv)[["k6a1","k6a2","k11","k12","k9a1","k9a2","delta", "lambda"]]
+	df_combinations=pd.read_csv(combination_csv)
+	column_names=df_combinations.columns.values[1:]
+	df_combinations=df_combinations[column_names]
+	df_output=pd.read_csv(output_csv)[column_names]
 
 	df_missing = get_different_rows(df_output,df_combinations)
 	print(df_missing.head())
@@ -436,11 +439,12 @@ def compare_submits_to_otput(path_dict):
 			"__delta_"+str(row[5])+
 			"__lambda_"+str(row[6])+".sh"
 		)
-	print(list_missing_submit_files)
-#move all missing files back to input_Data
+	#print(list_missing_submit_files)
 
-	for file_str in list_missing_submit_files:
-		shutil.move(path_dict["finished_input"]+file_str, path_dict["input_Data"]     )
+	#move all missing files back to input_Data
+
+	#for file_str in list_missing_submit_files:
+	#	shutil.move(path_dict["finished_input"]+file_str, path_dict["input_Data"]     )
 
 def run_jobs(mode_list,path_dict,no_of_submits,peak_height_for_spectra):
 	jobs_available=True
